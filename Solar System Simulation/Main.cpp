@@ -13,44 +13,11 @@
 #include "Camera.h"
 #include "Types.h"
 #include "InputHandler.h"
+#include "Controller.h"
+#include "Window.h"
+#include "Aplication.h"
 
 #include <iostream>
-
-void ProcessInput(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods);
-
-InputHandler Input;
-
-GLFWwindow* InitializeSystem()
-{
-    int Success = glfwInit();
-    if (Success == GLFW_FALSE)
-    {
-        return nullptr;
-    }
-
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
-
-    auto Window = glfwCreateWindow(1000, 1000, "Solar System Simulation", nullptr, nullptr);
-    if (!Window)
-    {
-        glfwTerminate();
-        return nullptr;
-    }
-
-    glfwMakeContextCurrent(Window);
-    Success = glewInit();
-
-    int Width = 0, Height = 0;
-    glfwGetFramebufferSize(Window, &Width, &Height);
-    glViewport(0, 0, Width, Height);
-
-    glfwSetKeyCallback(Window, ProcessInput);
-
-    return Window;
-}
 
 GLuint GenerateTexture(const char* FileName, GLint TextureFormat)
 {
@@ -83,7 +50,9 @@ GLuint GenerateTexture(const char* FileName, GLint TextureFormat)
 
 int main()
 {
-    auto Window = InitializeSystem();
+    Aplication* API1 = new Aplication;
+    // API1->CreateWindow(1000, 1000, "Solar System Simulation", nullptr, nullptr);
+    auto MainWindow = API1->GetWindow();
 
     float Vertices[] = {-0.5f, -0.5f, -0.5f, 0.0f, 0.0f, 0.5f, -0.5f, -0.5f, 1.0f, 0.0f, 0.5f, 0.5f, -0.5f, 1.0f, 1.0f, 0.5f, 0.5f, -0.5f,
         1.0f, 1.0f, -0.5f, 0.5f, -0.5f, 0.0f, 1.0f, -0.5f, -0.5f, -0.5f, 0.0f, 0.0f,
@@ -141,12 +110,10 @@ int main()
     ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-45.0f), glm::vec3(1.0f, 1.0f, 0.0f));
     ModelMatrix = glm::scale(ModelMatrix, glm::vec3(0.5f));
 
-    int Width, Height;
-    glfwGetFramebufferSize(Window, &Width, &Height);
+    int Width = MainWindow->GetWidth();
+    int Height = MainWindow->GetHeight();
     glm::mat4 ProjectionMatrix(1.0f);
     ProjectionMatrix = glm::perspective(glm::radians(45.0f), (float)Width / Height, 0.1f, 100.0f);
-
-    Camera MainCamera(glm::vec3(0.0f, 0.0f, 10.0f), glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 
     MainShader.SetMatrix4("ModelMatrix", glm::value_ptr(ModelMatrix));
     MainShader.SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
@@ -155,12 +122,18 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
-    Input.Bind(EKey::W, ETriggerEvent::PRESSED, std::bind(&Camera::AddOffset, &MainCamera, MainCamera.GetForwardVector() * 5.0f));
+    float DeltaTime = 0.0f;
+    float LastTime = glfwGetTime();
 
-    while (!glfwWindowShouldClose(Window))
+    while (!glfwWindowShouldClose(MainWindow->GetGLWindow()))
     {
+        DeltaTime = glfwGetTime() - LastTime;
+        LastTime = glfwGetTime();
+
         glfwPollEvents();
 
+        API1->Tick(DeltaTime);
+       
         glClearColor(0.3f, 0.2f, 0.4f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -170,14 +143,14 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, FaceTexture);
 
-            MainShader.SetMatrix4("ViewMatrix", glm::value_ptr(MainCamera.GetViewMatrix()));
+        MainShader.SetMatrix4("ViewMatrix", glm::value_ptr(MainWindow->GetView()));
 
         MainShader.Use();
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glBindVertexArray(0);
-        glfwSwapBuffers(Window);
+        glfwSwapBuffers(MainWindow->GetGLWindow());
     }
 
     glDeleteVertexArrays(1, &VAO);
@@ -185,12 +158,4 @@ int main()
 
     glfwTerminate();
     return 0;
-}
-
-void ProcessInput(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods) 
-{
-    if (Key == GLFW_KEY_W && glfwGetKey(Window, Key) == GLFW_PRESS)
-    {
-        Input.InputTriggered(EKey::W, ETriggerEvent::PRESSED);
-    }
 }

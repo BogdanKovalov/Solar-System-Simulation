@@ -4,11 +4,15 @@
 
 #include <glm/glm.hpp>
 
-class Camera
+#include "TickObject.h"
+
+class Camera : TickObject
 {
 public:
     Camera() = delete;
-    Camera(glm::vec3 Location, glm::vec3 TargetView, glm::vec3 WorldUp);
+    Camera(glm::vec3 Location, glm::vec3 TargetView);
+
+    void Tick(float DeltaTime) override;
 
     glm::mat4 GetViewMatrix() const;
     inline glm::vec3 GetForwardVector() const { return -ForwardVector; }
@@ -16,9 +20,11 @@ public:
     inline glm::vec3 GetUpVector() const { return UpVector; }
 
     inline void AddOffset(glm::vec3 Offset) { Location += Offset; }
+    inline void AddVelocity(glm::vec3 AddVelocity) { Velocity += AddVelocity; }
 
 private:
     glm::vec3 Location;
+    glm::vec3 Velocity;
     glm::vec3 ForwardVector;
     glm::vec3 RightVector;
     glm::vec3 UpVector;

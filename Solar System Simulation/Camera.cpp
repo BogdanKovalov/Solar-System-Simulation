@@ -1,13 +1,24 @@
 #include "Camera.h"
+#include "Aplication.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
-Camera::Camera(glm::vec3 Location, glm::vec3 TargetView, glm::vec3 WorldUp)
+Camera::Camera(glm::vec3 Location, glm::vec3 TargetView) : Velocity(0.0f)
 {
     this->Location = Location;
-    ForwardVector = glm::normalize(Location - TargetView);
-    RightVector = glm::normalize(glm::cross(ForwardVector, WorldUp));
-    UpVector = glm::cross(ForwardVector, RightVector);
+    auto API = Aplication::GetAPI();
+    if (API)
+    {
+        glm::vec3 WorldUp = Aplication::GetAPI()->GetWorldUp();
+        ForwardVector = glm::normalize(Location - TargetView);
+        RightVector = glm::normalize(glm::cross(ForwardVector, WorldUp));
+        UpVector = glm::cross(ForwardVector, RightVector);
+    }
+}
+
+void Camera::Tick(float DeltaTime) 
+{
+    AddOffset(Velocity * DeltaTime);
 }
 
 glm::mat4 Camera::GetViewMatrix() const
