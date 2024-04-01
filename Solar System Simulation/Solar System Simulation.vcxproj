@@ -142,7 +142,9 @@
     <ClCompile Include="Aplication.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="InputAction.cpp" />
     <ClCompile Include="InputHandler.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -153,7 +155,9 @@
     <ClInclude Include="Aplication.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="InputAction.h" />
     <ClInclude Include="InputHandler.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="TickObject.h" />

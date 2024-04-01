@@ -1,6 +1,8 @@
 #include "Aplication.h"
 #include "Window.h"
 #include "TickObject.h"
+#include "InputAction.h"
+#include "InputManager.h"
 #include <iostream>
 
 #define GLEW_STATIC
@@ -17,6 +19,7 @@ std::shared_ptr<Aplication> Aplication::GetAPI()
 Aplication::Aplication()
 {
     API = std::shared_ptr<Aplication>(this);
+    MainInputManager = std::shared_ptr<InputManager>(new InputManager());
     WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
     int Success = glfwInit();
@@ -35,6 +38,7 @@ Aplication::Aplication()
     CreateWindow(1000, 1000, "Solar System Simulation", nullptr, nullptr);
     Success = glewInit();
 
+    glfwSetInputMode(MainWindow->GetGLWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 void Aplication::CreateWindow(int Width, int Height, const char* Title, GLFWmonitor* Monitor, GLFWwindow* Share)
@@ -43,6 +47,7 @@ void Aplication::CreateWindow(int Width, int Height, const char* Title, GLFWmoni
     
     glfwMakeContextCurrent(MainWindow->GetGLWindow());
     glfwSetKeyCallback(MainWindow->GetGLWindow(), GLProcessKeyboard);
+    glfwSetCursorPosCallback(MainWindow->GetGLWindow(), GLProcessMouseMotion);
 }
 
 void Aplication::GLProcessKeyboard(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods)
@@ -51,7 +56,7 @@ void Aplication::GLProcessKeyboard(GLFWwindow* Window, int Key, int Scancode, in
     {
         return;
     }
-    API->ProcessKeyboard(Window, Key, Scancode, Action, Mods);
+    API->ProcessKeyboard(Key, Scancode, Action, Mods);
 }
 
 void Aplication::GLProcessMouseMotion(GLFWwindow* Window, double XPos, double YPos)
@@ -60,37 +65,32 @@ void Aplication::GLProcessMouseMotion(GLFWwindow* Window, double XPos, double YP
     {
         return;
     }
-    API->ProcessMouseMotion(Window, XPos, YPos);
+    API->ProcessMouseMotion(XPos, YPos);
 }
 
-void Aplication::ProcessKeyboard(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods)
+void Aplication::ProcessKeyboard(int Key, int Scancode, int Action, int Mods)
 {
-    if (!Window && !MainWindow)
+    if (!MainInputManager)
     {
         return;
     }
-    if (Window == MainWindow->GetGLWindow())
-    {
-        MainWindow->ProcessKeyboard(Key, Scancode, Action, Mods);
-    }
+    MainInputManager->ProcessKeyboard(Key, Scancode, Action, Mods);
 }
 
-void Aplication::ProcessMouseMotion(GLFWwindow* Window, double XPos, double YPos)
+void Aplication::ProcessMouseMotion(double XPos, double YPos) 
 {
-    if (!Window && !MainWindow)
+    if (!MainInputManager)
     {
         return;
     }
-    if (Window == MainWindow->GetGLWindow())
-    {
-        MainWindow->ProcessMouseMotion(XPos, YPos);
-    }
+    MainInputManager->ProcessMouseMotion(XPos, YPos);
 }
 
 void Aplication::AddTickObject(TickObject* Object) 
 {
     TickObjects.push_back(Object);
 }
+
 
 void Aplication::Tick(float DeltaTime) 
 {

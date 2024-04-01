@@ -21,6 +21,7 @@ public:
 
     inline void AddOffset(glm::vec3 Offset) { Location += Offset; }
     inline void AddVelocity(glm::vec3 AddVelocity) { Velocity += AddVelocity; }
+    void Rotate(glm::vec2 YawAndPitch);
 
 private:
     glm::vec3 Location;

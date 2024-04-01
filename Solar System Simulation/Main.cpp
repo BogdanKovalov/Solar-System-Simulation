@@ -122,8 +122,8 @@ int main()
 
     glEnable(GL_DEPTH_TEST);
 
-    float DeltaTime = 0.0f;
-    float LastTime = glfwGetTime();
+    double DeltaTime = 0.0;
+    double LastTime = glfwGetTime();
 
     while (!glfwWindowShouldClose(MainWindow->GetGLWindow()))
     {

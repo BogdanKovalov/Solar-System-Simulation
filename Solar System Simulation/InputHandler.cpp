@@ -1,21 +1,25 @@
 #include "InputHandler.h"
+#include "Types.h"
+#include "glm/glm.hpp"
 
-void InputHandler::Bind(EKey KeyToBind, ETriggerEvent TriggerEvent, std::function<void()> CallToBind) 
+/* void InputHandler::Bind(ETrigger Trigger, ETriggerEvent TriggerEvent, std::function<void(FInputValue const&)> CallToBind)
 {
-    KeyFunctionMap.emplace(std::make_pair(std::make_pair(KeyToBind, TriggerEvent), CallToBind));
-}
+    KeyFunctionMap.emplace(std::make_pair(std::make_pair(Trigger, TriggerEvent), CallToBind));
+}*/
 
-void InputHandler::InputTriggered(EKey PressedKey, ETriggerEvent TriggerEvent) const 
+
+
+void InputHandler::InputTriggered(InputAction* Action) const 
 {
-    if (!IsInputEnable)
+    if (!IsInputEnable || !Action)
     {
         return;
     }
-    auto KeyFunctionPair = KeyFunctionMap.find(std::make_pair(PressedKey, TriggerEvent));
+    auto KeyFunctionPair = KeyFunctionMap.find(Action);
     if (KeyFunctionPair == KeyFunctionMap.end())
     {
         return;
     }
 
-    KeyFunctionPair->second();
+    KeyFunctionPair->second(Action->GetInputValue());
 }
