@@ -46,7 +46,6 @@ void Controller::Move(FInputValue const& InputValue)
 {
     if (!ControlledPawn)
     {
-        FirstMouse = false;
         return;
     }
     glm::vec2 Value = InputValue.Get<glm::vec2>();
@@ -61,11 +60,12 @@ void Controller::Look(FInputValue const& InputValue)
     if (!ControlledPawn || FirstMouse)
     {
         FirstMouse = false;
+        LastMousePos = InputValue.Get<glm::vec2>();
         return;
     }
     glm::vec2 DeltaMouse = InputValue.Get<glm::vec2>() - LastMousePos;
     LastMousePos = InputValue.Get<glm::vec2>();
-    ControlledPawn->Rotate(DeltaMouse);
+    ControlledPawn->Rotate(DeltaMouse * MouseSensitivity);
 }
 
 glm::mat4 Controller::GetView() const

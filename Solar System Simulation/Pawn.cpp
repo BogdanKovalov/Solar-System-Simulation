@@ -2,6 +2,8 @@
 #include "Camera.h"
 #include "InputHandler.h"
 
+#include <glm/gtc/matrix_transform.hpp>
+
 Pawn::Pawn(glm::vec3 Location, glm::vec3 Velocity)
 {
     this->Location = Location;
@@ -28,6 +30,13 @@ void Pawn::Rotate(glm::vec2 YawAndPitch)
     {
         return;
     }
+
+    glm::mat4 RotaionMatrix(1.0f);
+    RotaionMatrix = glm::rotate(RotaionMatrix, glm::radians(YawAndPitch.x), GetUpVector());
+    RotaionMatrix = glm::rotate(RotaionMatrix, glm::radians(YawAndPitch.y), GetRightVector());
+
+    Velocity = RotaionMatrix * glm::vec4(Velocity, 1.0f);
+
     AttachedCamera->Rotate(YawAndPitch);
 }
 

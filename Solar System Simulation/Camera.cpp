@@ -18,27 +18,23 @@ Camera::Camera(glm::vec3 Location, glm::vec3 TargetView) : Velocity(0.0f)
 
 void Camera::Rotate(glm::vec2 YawAndPitch)
 {
-    YawAndPitch = YawAndPitch * 0.01f;
+    Rotation += glm::vec3(YawAndPitch, 0.0f);
+    if (Rotation.y >= 90.0f)
+    {
+        Rotation.y = 89.9f;
+    }
+    if (Rotation.y <= -90.0f)
+    {
+        Rotation.y = -89.9f;
+    }
 
-    glm::mat4 RotationMatrix(1.0f);
-
-    RotationMatrix = glm::mat4(1.0f);
-    RotationMatrix = glm::rotate(RotationMatrix, glm::radians(YawAndPitch.y), -RightVector);
-
-    ForwardVector = RotationMatrix * glm::vec4(ForwardVector, 1.0f);
-    RightVector = RotationMatrix * glm::vec4(RightVector, 1.0f);
-    UpVector = RotationMatrix * glm::vec4(UpVector, 1.0f);
-
-    RotationMatrix = glm::mat4(1.0f);
-    RotationMatrix = glm::rotate(RotationMatrix, glm::radians(YawAndPitch.x), UpVector);
-
-    ForwardVector = RotationMatrix * glm::vec4(ForwardVector, 1.0f);
-    RightVector = RotationMatrix * glm::vec4(RightVector, 1.0f);
-    UpVector = RotationMatrix * glm::vec4(UpVector, 1.0f);
+    ForwardVector.z = cos(glm::radians(Rotation.x)) * cos(glm::radians(Rotation.y));
+    ForwardVector.y = sin(glm::radians(Rotation.y));
+    ForwardVector.x = sin(glm::radians(Rotation.x)) * cos(glm::radians(Rotation.y));
 
     ForwardVector = glm::normalize(ForwardVector);
-    RightVector = glm::normalize(RightVector);
-    UpVector = glm::normalize(UpVector);
+    RightVector = glm::normalize(glm::cross(ForwardVector, glm::vec3(0.0f, 1.0f, 0.0f)));
+    UpVector = glm::cross(RightVector, ForwardVector);
 }
 
 void Camera::Tick(float DeltaTime)
@@ -54,6 +50,6 @@ glm::mat4 Camera::GetViewMatrix() const
     glm::mat4 PositionMatrix(1.0f);
     PositionMatrix = glm::translate(PositionMatrix, -Location);
 
-    glm::mat4 ViewMatrix = VectorMatrix * PositionMatrix;
+    glm::mat4 ViewMatrix = glm::transpose(VectorMatrix) * PositionMatrix;
     return ViewMatrix;
 }

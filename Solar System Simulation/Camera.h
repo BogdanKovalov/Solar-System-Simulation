@@ -29,6 +29,8 @@ private:
     glm::vec3 ForwardVector;
     glm::vec3 RightVector;
     glm::vec3 UpVector;
+
+    glm::vec3 Rotation = glm::vec3(0.0f);
 };
 
 #endif _CAMERA_H_

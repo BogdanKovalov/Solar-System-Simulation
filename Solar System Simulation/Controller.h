@@ -34,7 +34,7 @@ private:
     std::shared_ptr<InputAction> LookAction;
 
     glm::vec2 LastMousePos;
-
+    float MouseSensitivity = 0.01;
     bool FirstMouse = true;
 };
 
