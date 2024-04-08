@@ -69,5 +69,18 @@ glm::vec3 Pawn::GetUpVector() const
 
 glm::mat4 Pawn::GetView() const
 {
+    if (!AttachedCamera)
+    {
+        return glm::mat4();
+    }
     return AttachedCamera->GetViewMatrix();
+}
+
+glm::vec3 Pawn::GetCameraLocation() const
+{
+    if (!AttachedCamera)
+    {
+        return glm::vec3();
+    }
+    return AttachedCamera->GetLocation();
 }

@@ -19,6 +19,12 @@
     <Filter Include="Source Files\InputSystem">
       <UniqueIdentifier>{43ff9c9f-4946-477f-9fb9-9c3616fa26e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Light">
+      <UniqueIdentifier>{35f8b6b8-f92e-4593-a88a-f0c40a73e7be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Light">
+      <UniqueIdentifier>{8b6a1807-d16c-4cd1-bf71-2452594208b9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -54,6 +60,18 @@
     <ClCompile Include="InputManager.cpp">
       <Filter>Source Files\InputSystem</Filter>
     </ClCompile>
+    <ClCompile Include="DirectionalLight.cpp">
+      <Filter>Source Files\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Light.cpp">
+      <Filter>Source Files\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="PointLight.cpp">
+      <Filter>Source Files\Light</Filter>
+    </ClCompile>
+    <ClCompile Include="SpotLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -88,6 +106,18 @@
     </ClInclude>
     <ClInclude Include="InputManager.h">
       <Filter>Header Files\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="DirectionalLight.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Light.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="PointLight.h">
+      <Filter>Header Files\Light</Filter>
+    </ClInclude>
+    <ClInclude Include="SpotLight.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

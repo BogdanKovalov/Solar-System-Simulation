@@ -142,12 +142,16 @@
     <ClCompile Include="Aplication.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="Controller.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="InputAction.cpp" />
     <ClCompile Include="InputHandler.cpp" />
     <ClCompile Include="InputManager.cpp" />
+    <ClCompile Include="Light.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Pawn.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="TickObject.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -155,11 +159,15 @@
     <ClInclude Include="Aplication.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Controller.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="InputAction.h" />
     <ClInclude Include="InputHandler.h" />
     <ClInclude Include="InputManager.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Pawn.h" />
+    <ClInclude Include="PointLight.h" />
     <ClInclude Include="Shader.h" />
+    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="TickObject.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Window.h" />

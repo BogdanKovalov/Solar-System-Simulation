@@ -19,6 +19,7 @@ public:
     void ProcessMouseMotion(double XPos, double YPos);
 
     glm::mat4 GetView() const;
+    glm::vec3 GetCameraLocation() const;
 
     void Move(FInputValue const& InputValue);
     void Look(FInputValue const& InputValue);

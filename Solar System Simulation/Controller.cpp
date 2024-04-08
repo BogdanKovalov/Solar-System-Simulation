@@ -70,5 +70,18 @@ void Controller::Look(FInputValue const& InputValue)
 
 glm::mat4 Controller::GetView() const
 {
+    if (!ControlledPawn)
+    {
+        return glm::mat4();
+    }
     return ControlledPawn->GetView();
+}
+
+glm::vec3 Controller::GetCameraLocation() const
+{
+    if (!ControlledPawn)
+    {
+        return glm::vec3();
+    }
+    return ControlledPawn->GetCameraLocation();
 }

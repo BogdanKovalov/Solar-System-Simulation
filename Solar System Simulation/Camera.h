@@ -18,6 +18,7 @@ public:
     inline glm::vec3 GetForwardVector() const { return -ForwardVector; }
     inline glm::vec3 GetRightVector() const { return RightVector; }
     inline glm::vec3 GetUpVector() const { return UpVector; }
+    inline glm::vec3 GetLocation() const { return Location; }
 
     inline void AddOffset(glm::vec3 Offset) { Location += Offset; }
     inline void AddVelocity(glm::vec3 AddVelocity) { Velocity += AddVelocity; }

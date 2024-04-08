@@ -27,6 +27,7 @@ public:
     glm::vec3 GetRightVector() const;
     glm::vec3 GetUpVector() const;
     glm::mat4 GetView() const;
+    glm::vec3 GetCameraLocation() const;
 
 private:
     std::shared_ptr<Camera> AttachedCamera;

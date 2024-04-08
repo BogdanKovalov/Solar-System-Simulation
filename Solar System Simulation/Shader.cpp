@@ -87,6 +87,18 @@ void Shader::SetMatrix4(const GLchar* Name, const GLfloat* Matrix)
     glUniformMatrix4fv(glGetUniformLocation(Program, Name), 1, GL_FALSE, Matrix);
 }
 
+void Shader::SetMatrix3(const GLchar* Name, const GLfloat* Matrix) 
+{
+    Use();
+    glUniformMatrix3fv(glGetUniformLocation(Program, Name), 1, GL_FALSE, Matrix);
+}
+
+void Shader::SetVec3(const GLchar* Name, glm::vec3 Vec3) 
+{
+    Use();
+    glUniform3f(glGetUniformLocation(Program, Name), Vec3.x, Vec3.y, Vec3.z);
+}
+
 void Shader::SetInt(const GLchar* Name, const GLint Int) 
 {
     Use();
