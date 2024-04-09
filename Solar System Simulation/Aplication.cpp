@@ -1,8 +1,8 @@
 #include "Aplication.h"
 #include "Window.h"
 #include "TickObject.h"
-#include "InputAction.h"
-#include "InputManager.h"
+#include "InputSystem/InputAction.h"
+#include "InputSystem/InputManager.h"
 #include <iostream>
 
 #define GLEW_STATIC

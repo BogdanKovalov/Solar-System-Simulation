@@ -13,17 +13,23 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Header Files\InputSystem">
-      <UniqueIdentifier>{9dc0ffa8-487d-491d-b571-6ad98d6777df}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\InputSystem">
-      <UniqueIdentifier>{43ff9c9f-4946-477f-9fb9-9c3616fa26e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\Light">
-      <UniqueIdentifier>{35f8b6b8-f92e-4593-a88a-f0c40a73e7be}</UniqueIdentifier>
+      <UniqueIdentifier>{6951b733-eaa3-4cb7-b196-be426a824018}</UniqueIdentifier>
     </Filter>
     <Filter Include="Header Files\Light">
-      <UniqueIdentifier>{8b6a1807-d16c-4cd1-bf71-2452594208b9}</UniqueIdentifier>
+      <UniqueIdentifier>{ed982e74-47fc-4ddc-9d95-9dd4be355c9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Models">
+      <UniqueIdentifier>{3c0ee74a-dc02-47f4-9762-fd7a92e8f083}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Models">
+      <UniqueIdentifier>{516e03a2-bfc9-40b4-9bd7-65b02eb0e52f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\InputSystem">
+      <UniqueIdentifier>{bfba0f00-d398-4eb0-9d55-e061cbc75f89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\InputSystem">
+      <UniqueIdentifier>{2c3e1116-85c5-4f06-965b-9a781f0e4935}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -51,32 +57,32 @@
     <ClCompile Include="TickObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="InputHandler.cpp">
-      <Filter>Source Files\InputSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="InputAction.cpp">
-      <Filter>Source Files\InputSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="InputManager.cpp">
-      <Filter>Source Files\InputSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="DirectionalLight.cpp">
+    <ClCompile Include="Light\Light.cpp">
       <Filter>Source Files\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Light.cpp">
+    <ClCompile Include="Light\PointLight.cpp">
       <Filter>Source Files\Light</Filter>
     </ClCompile>
-    <ClCompile Include="PointLight.cpp">
+    <ClCompile Include="Light\SpotLight.cpp">
       <Filter>Source Files\Light</Filter>
     </ClCompile>
-    <ClCompile Include="SpotLight.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Light\DirectionalLight.cpp">
+      <Filter>Source Files\Light</Filter>
     </ClCompile>
-    <ClCompile Include="Mesh.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Models\Model.cpp">
+      <Filter>Source Files\Models</Filter>
     </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="Models\Mesh.cpp">
+      <Filter>Source Files\Models</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem\InputAction.cpp">
+      <Filter>Source Files\InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem\InputHandler.cpp">
+      <Filter>Source Files\InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="InputSystem\InputManager.cpp">
+      <Filter>Source Files\InputSystem</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -104,32 +110,32 @@
     <ClInclude Include="TickObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="InputAction.h">
-      <Filter>Header Files\InputSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="InputHandler.h">
-      <Filter>Header Files\InputSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="InputManager.h">
-      <Filter>Header Files\InputSystem</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectionalLight.h">
+    <ClInclude Include="Light\Light.h">
       <Filter>Header Files\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Light.h">
+    <ClInclude Include="Light\PointLight.h">
       <Filter>Header Files\Light</Filter>
     </ClInclude>
-    <ClInclude Include="PointLight.h">
+    <ClInclude Include="Light\SpotLight.h">
       <Filter>Header Files\Light</Filter>
     </ClInclude>
-    <ClInclude Include="SpotLight.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Light\DirectionalLight.h">
+      <Filter>Header Files\Light</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Models\Mesh.h">
+      <Filter>Header Files\Models</Filter>
     </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Models\Model.h">
+      <Filter>Header Files\Models</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem\InputAction.h">
+      <Filter>Header Files\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem\InputHandler.h">
+      <Filter>Header Files\InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="InputSystem\InputManager.h">
+      <Filter>Header Files\InputSystem</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

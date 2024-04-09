@@ -1,6 +1,6 @@
 #include "Pawn.h"
 #include "Camera.h"
-#include "InputHandler.h"
+#include "InputSystem/InputHandler.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 

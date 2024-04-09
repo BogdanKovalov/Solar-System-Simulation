@@ -9,13 +9,13 @@
 #include "Shader.h"
 #include "Camera.h"
 #include "Types.h"
-#include "InputHandler.h"
+#include "InputSystem/InputHandler.h"
 #include "Controller.h"
 #include "Window.h"
 #include "Aplication.h"
-#include "PointLight.h"
-#include "SpotLight.h"
-#include "Model.h"
+#include "Light/PointLight.h"
+#include "Light/SpotLight.h"
+#include "Models/Model.h"
 
 #include <iostream>
 
@@ -366,9 +366,9 @@ int main()
     //    GLuint EmissionMap = GenerateTexture("EmissionMap.jpg");
 
     glm::mat4 ModelMatrix(1.0f);
-    ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 0.0f, 0.0f));
-    ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-45.0f), glm::vec3(1.0f, 1.0f, 0.0f));
-    ModelMatrix = glm::scale(ModelMatrix, glm::vec3(0.5f));
+    ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -0.5f, 0.0f));
+   //ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-45.0f), glm::vec3(1.0f, 1.0f, 0.0f));
+    ModelMatrix = glm::scale(ModelMatrix, glm::vec3(0.25f));
 
     int Width = MainWindow->GetWidth();
     int Height = MainWindow->GetHeight();
@@ -400,7 +400,7 @@ int main()
     MainShader.SetVec3("SpotLight.Direction", SpotLight.GetDirection());
     MainShader.SetFloat("SpotLight.CutOff", glm::cos(glm::radians(SpotLight.GetAngle())));
     MainShader.SetFloat("SpotLight.OuterCutOff", glm::cos(glm::radians(SpotLight.GetOuterAngle())));
-    // MainShader.SetVec3("LightPos", glm::vec3(1.0f, 1.0f, 1.0f));
+    MainShader.SetVec3("LightPos", glm::vec3(1.0f, 1.0f, 1.0f));
 
     LightShader.SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
 
@@ -410,7 +410,7 @@ int main()
     double DeltaTime = 0.0;
     double LastTime = glfwGetTime();
 
-    Model Backpack("Backpack/backpack.obj");
+    Model Boy("Boy/Super_meatboy_free.obj");
     Shader BackpackShader("Shaders/Backpack.vert", "Shaders/Backpack.frag");
 
     BackpackShader.SetMatrix4("model", glm::value_ptr(ModelMatrix));
@@ -460,7 +460,7 @@ int main()
         glBindVertexArray(0);
 
         BackpackShader.SetMatrix4("view", glm::value_ptr(MainWindow->GetView()));
-        Backpack.Draw(BackpackShader);
+        Boy.Draw(BackpackShader);
         glfwSwapBuffers(MainWindow->GetGLWindow());
     }
 

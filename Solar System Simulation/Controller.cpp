@@ -1,6 +1,6 @@
 #include "Controller.h"
-#include "InputHandler.h"
-#include "InputAction.h"
+#include "InputSystem/InputHandler.h"
+#include "InputSystem/InputAction.h"
 #include "Aplication.h"
 #include "Pawn.h"
 
