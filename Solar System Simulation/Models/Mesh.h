@@ -6,35 +6,15 @@
 #include <string>
 #include <vector>
 
+#include "../ModelUtilities.h"
+
 typedef unsigned int GLuint;
 class Shader;
-
-enum class ETextureType
-{
-    DIFFUSE,
-    SPECULAR
-};
-
-std::string TypeToString(ETextureType Type);
-
-struct Vertex
-{
-	glm::vec3 Location;
-    glm::vec3 Normal;
-    glm::vec2 TextureCoords;
-};
-
-struct Texture
-{
-    unsigned int ID;
-    ETextureType Type;
-    std::string Path;
-};
 
 class Mesh
 {
 public:
-    Mesh(std::vector<Vertex> const& InVertices, std::vector<GLuint> const& InIndices, std::vector<Texture> InTextures);
+    Mesh(std::vector<Vertex> InVertices, std::vector<GLuint> InIndices, std::vector<Texture> InTextures);
     void Draw(Shader& Shader);
 
 private:

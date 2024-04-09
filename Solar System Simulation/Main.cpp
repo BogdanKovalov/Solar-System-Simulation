@@ -16,6 +16,7 @@
 #include "Light/PointLight.h"
 #include "Light/SpotLight.h"
 #include "Models/Model.h"
+#include "ModelBuilder.h"
 
 #include <iostream>
 
@@ -410,7 +411,11 @@ int main()
     double DeltaTime = 0.0;
     double LastTime = glfwGetTime();
 
-    Model Boy("Boy/Super_meatboy_free.obj");
+    //Model Boy("Boy/Super_meatboy_free.obj");
+    ModelBuilder Builder;
+    auto Boy = Builder.ImportModel("Boy/Super_meatboy_free.obj");
+    auto SecondBoy = Builder.ImportModel("Boy/Super_meatboy_free.obj");
+
     Shader BackpackShader("Shaders/Backpack.vert", "Shaders/Backpack.frag");
 
     BackpackShader.SetMatrix4("model", glm::value_ptr(ModelMatrix));
@@ -425,7 +430,7 @@ int main()
 
         API1->Tick(DeltaTime);
 
-        glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
+        glClearColor(0.0f,0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //glActiveTexture(GL_TEXTURE0);
@@ -460,7 +465,11 @@ int main()
         glBindVertexArray(0);
 
         BackpackShader.SetMatrix4("view", glm::value_ptr(MainWindow->GetView()));
-        Boy.Draw(BackpackShader);
+        BackpackShader.SetMatrix4("model", glm::value_ptr(ModelMatrix));
+        Boy->Draw(BackpackShader);
+
+        BackpackShader.SetMatrix4("model", glm::value_ptr(LightModelMatrix));
+        SecondBoy->Draw(BackpackShader);
         glfwSwapBuffers(MainWindow->GetGLWindow());
     }
 

@@ -1,11 +1,11 @@
 #include "Mesh.h"
-#include "Shader.h"
+#include "../Shader.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-Mesh::Mesh(std::vector<Vertex> const& InVertices, std::vector<GLuint> const& InIndices, std::vector<Texture> InTextures)
+Mesh::Mesh(std::vector<Vertex> InVertices, std::vector<GLuint> InIndices, std::vector<Texture> InTextures)
 {
     Vertices = InVertices;
     Indices = InIndices;
@@ -50,7 +50,7 @@ void Mesh::Draw(Shader& Shader)
         glActiveTexture(GL_TEXTURE0 + i);
 
         std::string Number;
-        std::string Name = TypeToString(Textures[i].Type);
+        std::string Name = ModelUtilities::TypeToString(Textures[i].Type);
         if (Textures[i].Type == ETextureType::DIFFUSE)
         {
             Number = std::to_string(DiffuseNum++);
@@ -60,7 +60,7 @@ void Mesh::Draw(Shader& Shader)
             Number = std::to_string(SpecularNum++);
         }
 
-        Shader.SetInt((Name + Number).c_str(), i);
+        Shader.SetInt(("Material." + Name + Number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, Textures[i].ID);
     }
 
@@ -69,15 +69,4 @@ void Mesh::Draw(Shader& Shader)
     glBindVertexArray(0);
 
     glActiveTexture(GL_TEXTURE0);
-}
-
-std::string TypeToString(ETextureType Type)
-{
-    switch (Type)
-    {
-        case ETextureType::DIFFUSE: return "TextureDiffuse";
-        case ETextureType::SPECULAR: return "TextureSpecular";
-        default: break;
-    }
-    return std::string();
 }

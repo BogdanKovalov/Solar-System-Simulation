@@ -36,7 +36,7 @@ Aplication::Aplication()
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
     glfwWindowHint(GLFW_SAMPLES, 4);
 
-    CreateWindow(1000, 1000, "Solar System Simulation", nullptr, nullptr);
+    CreateWindow(1920, 1080, "Solar System Simulation", nullptr, nullptr);
     Success = glewInit();
 
     glfwSetInputMode(MainWindow->GetGLWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
