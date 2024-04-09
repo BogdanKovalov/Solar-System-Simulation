@@ -2,9 +2,6 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#define STB_IMAGE_IMPLEMENTATION
-#include <Image/stb_image.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -18,37 +15,9 @@
 #include "Aplication.h"
 #include "PointLight.h"
 #include "SpotLight.h"
+#include "Model.h"
 
 #include <iostream>
-
-GLuint GenerateTexture(const char* FileName, GLint TextureFormat)
-{
-    int Width = 0, Height = 0, NrChannels = 0;
-    unsigned char* Data = stbi_load(FileName, &Width, &Height, &NrChannels, 0);
-
-    if (!Data)
-    {
-        std::cout << "Failed to load image" << std::endl;
-        stbi_image_free(Data);
-        return 0;
-    }
-
-    GLuint Texture;
-    glGenTextures(1, &Texture);
-    glBindTexture(GL_TEXTURE_2D, Texture);
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, TextureFormat, Width, Height, 0, TextureFormat, GL_UNSIGNED_BYTE, Data);
-    glGenerateMipmap(GL_TEXTURE_2D);
-
-    stbi_image_free(Data);
-
-    return Texture;
-}
 
 int main()
 {
@@ -392,9 +361,9 @@ int main()
     Shader MainShader("Shaders/Vertex.vert", "Shaders/Fragment.frag");
     Shader LightShader("Shaders/Vertex.vert", "Shaders/LightFragment.frag");
 
-    GLuint BoxTexture = GenerateTexture("Box.png", GL_RGBA);
-    GLuint SpecularMap = GenerateTexture("SpecularMap.png", GL_RGBA);
-    GLuint EmissionMap = GenerateTexture("EmissionMap.jpg", GL_RGB);
+    //GLuint BoxTexture = GenerateTexture("Box.png");
+    //GLuint SpecularMap = GenerateTexture("SpecularMap.png");
+    //    GLuint EmissionMap = GenerateTexture("EmissionMap.jpg");
 
     glm::mat4 ModelMatrix(1.0f);
     ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, 0.0f, 0.0f));
@@ -436,9 +405,16 @@ int main()
     LightShader.SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
 
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_MULTISAMPLE);
 
     double DeltaTime = 0.0;
     double LastTime = glfwGetTime();
+
+    Model Backpack("Backpack/backpack.obj");
+    Shader BackpackShader("Shaders/Backpack.vert", "Shaders/Backpack.frag");
+
+    BackpackShader.SetMatrix4("model", glm::value_ptr(ModelMatrix));
+    BackpackShader.SetMatrix4("projection", glm::value_ptr(ProjectionMatrix));
 
     while (!glfwWindowShouldClose(MainWindow->GetGLWindow()))
     {
@@ -449,17 +425,17 @@ int main()
 
         API1->Tick(DeltaTime);
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.0f, 1.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, BoxTexture);
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_2D, BoxTexture);
 
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, SpecularMap);
+        //glActiveTexture(GL_TEXTURE1);
+        //glBindTexture(GL_TEXTURE_2D, SpecularMap);
 
-        glActiveTexture(GL_TEXTURE2);
-        glBindTexture(GL_TEXTURE_2D, EmissionMap);
+        // glActiveTexture(GL_TEXTURE2);
+        // glBindTexture(GL_TEXTURE_2D, EmissionMap);
 
         MainShader.SetMatrix4("ViewMatrix", glm::value_ptr(MainWindow->GetView()));
         MainShader.SetVec3("ViewPos", MainWindow->GetCameraLocation());
@@ -475,13 +451,16 @@ int main()
 
         MainShader.Use();
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
 
         LightShader.Use();
         glBindVertexArray(LightVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+        //glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glBindVertexArray(0);
+
+        BackpackShader.SetMatrix4("view", glm::value_ptr(MainWindow->GetView()));
+        Backpack.Draw(BackpackShader);
         glfwSwapBuffers(MainWindow->GetGLWindow());
     }
 

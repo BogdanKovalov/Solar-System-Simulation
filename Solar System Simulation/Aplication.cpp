@@ -34,6 +34,7 @@ Aplication::Aplication()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
+    glfwWindowHint(GLFW_SAMPLES, 4);
 
     CreateWindow(1000, 1000, "Solar System Simulation", nullptr, nullptr);
     Success = glewInit();

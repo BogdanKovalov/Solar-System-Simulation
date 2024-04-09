@@ -102,6 +102,7 @@ void Shader::SetVec3(const GLchar* Name, glm::vec3 Vec3)
 void Shader::SetInt(const GLchar* Name, const GLint Int) 
 {
     Use();
+    auto loc = glGetUniformLocation(Program, Name);
     glUniform1i(glGetUniformLocation(Program, Name), Int);
 }
 
