@@ -16,7 +16,7 @@ typedef unsigned int GLuint;
 class TextureBuilder
 {
 public:
-    std::vector<Texture>& CreateTextureFromMaterial(
+    std::vector<Texture> CreateTextureFromMaterial(
         aiMaterial* Material, aiTextureType Type, ETextureType TextureType, std::string Directory);
 
 private:

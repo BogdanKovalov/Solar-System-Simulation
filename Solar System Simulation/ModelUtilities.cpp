@@ -6,6 +6,7 @@ std::string ModelUtilities::TypeToString(ETextureType Type)
     {
         case ETextureType::DIFFUSE: return "TextureDiffuse";
         case ETextureType::SPECULAR: return "TextureSpecular";
+        case ETextureType::NORMAL: return "TextureNormal";
         default: break;
     }
     return std::string();

@@ -362,13 +362,13 @@ int main()
     Shader MainShader("Shaders/Vertex.vert", "Shaders/Fragment.frag");
     Shader LightShader("Shaders/Vertex.vert", "Shaders/LightFragment.frag");
 
-    //GLuint BoxTexture = GenerateTexture("Box.png");
-    //GLuint SpecularMap = GenerateTexture("SpecularMap.png");
-    //    GLuint EmissionMap = GenerateTexture("EmissionMap.jpg");
+    // GLuint BoxTexture = GenerateTexture("Box.png");
+    // GLuint SpecularMap = GenerateTexture("SpecularMap.png");
+    //     GLuint EmissionMap = GenerateTexture("EmissionMap.jpg");
 
     glm::mat4 ModelMatrix(1.0f);
     ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -0.5f, 0.0f));
-   //ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-45.0f), glm::vec3(1.0f, 1.0f, 0.0f));
+    //ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-45.0f), glm::vec3(1.0f, 1.0f, 0.0f));
     ModelMatrix = glm::scale(ModelMatrix, glm::vec3(0.25f));
 
     int Width = MainWindow->GetWidth();
@@ -384,7 +384,7 @@ int main()
     MainShader.SetInt("MeshMaterial.Emission", 2);
     MainShader.SetFloat("MeshMaterial.Shininess", 64);
 
-    PointLight Light(50.0f);
+    PointLight Light(1000.0f, glm::vec3(0.5f), glm::vec3(0.5f),glm::vec3(1.0f));
     SpotLight SpotLight(glm::vec3(0.0f, 0.0f, -1.0f), 12.5f, 17.5f);
     SpotLight.SetLocation(glm::vec3(0.0f, 0.0f, 1.0f));
 
@@ -411,15 +411,20 @@ int main()
     double DeltaTime = 0.0;
     double LastTime = glfwGetTime();
 
-    //Model Boy("Boy/Super_meatboy_free.obj");
+    // Model Boy("Boy/Super_meatboy_free.obj");
     ModelBuilder Builder;
     auto Boy = Builder.ImportModel("Boy/Super_meatboy_free.obj");
-    auto SecondBoy = Builder.ImportModel("Boy/Super_meatboy_free.obj");
 
     Shader BackpackShader("Shaders/Backpack.vert", "Shaders/Backpack.frag");
 
-    BackpackShader.SetMatrix4("model", glm::value_ptr(ModelMatrix));
-    BackpackShader.SetMatrix4("projection", glm::value_ptr(ProjectionMatrix));
+    BackpackShader.SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
+
+    BackpackShader.SetVec3("PointLight.Ambient", Light.GetAmbientAspect());
+    BackpackShader.SetVec3("PointLight.Diffuse", Light.GetDiffuseAspect());
+    BackpackShader.SetVec3("PointLight.Specular", Light.GetSpecularAspect());
+    BackpackShader.SetFloat("PointLight.LinearCoef", Light.GetLinearCoef());
+    BackpackShader.SetFloat("PointLight.QuadraticCoef", Light.GetQuadraticCoef());
+    BackpackShader.SetFloat("MeshMaterial.Shininess", 10);
 
     while (!glfwWindowShouldClose(MainWindow->GetGLWindow()))
     {
@@ -430,14 +435,14 @@ int main()
 
         API1->Tick(DeltaTime);
 
-        glClearColor(0.0f,0.0f, 0.0f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        //glActiveTexture(GL_TEXTURE0);
-        //glBindTexture(GL_TEXTURE_2D, BoxTexture);
+        // glActiveTexture(GL_TEXTURE0);
+        // glBindTexture(GL_TEXTURE_2D, BoxTexture);
 
-        //glActiveTexture(GL_TEXTURE1);
-        //glBindTexture(GL_TEXTURE_2D, SpecularMap);
+        // glActiveTexture(GL_TEXTURE1);
+        // glBindTexture(GL_TEXTURE_2D, SpecularMap);
 
         // glActiveTexture(GL_TEXTURE2);
         // glBindTexture(GL_TEXTURE_2D, EmissionMap);
@@ -456,20 +461,20 @@ int main()
 
         MainShader.Use();
         glBindVertexArray(VAO);
-        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        // glDrawArrays(GL_TRIANGLES, 0, 36);
 
         LightShader.Use();
         glBindVertexArray(LightVAO);
-        //glDrawArrays(GL_TRIANGLES, 0, 36);
+        // glDrawArrays(GL_TRIANGLES, 0, 36);
 
         glBindVertexArray(0);
 
-        BackpackShader.SetMatrix4("view", glm::value_ptr(MainWindow->GetView()));
-        BackpackShader.SetMatrix4("model", glm::value_ptr(ModelMatrix));
+        BackpackShader.SetMatrix4("ViewMatrix", glm::value_ptr(MainWindow->GetView()));
+        BackpackShader.SetMatrix4("ModelMatrix", glm::value_ptr(ModelMatrix));
+        BackpackShader.SetVec3("PointLight.Location", Light.GetLocation());
+        BackpackShader.SetVec3("ViewPos", MainWindow->GetCameraLocation());
         Boy->Draw(BackpackShader);
 
-        BackpackShader.SetMatrix4("model", glm::value_ptr(LightModelMatrix));
-        SecondBoy->Draw(BackpackShader);
         glfwSwapBuffers(MainWindow->GetGLWindow());
     }
 

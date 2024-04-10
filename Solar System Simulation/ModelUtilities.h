@@ -9,7 +9,8 @@
 enum class ETextureType
 {
     DIFFUSE,
-    SPECULAR
+    SPECULAR,
+    NORMAL
 };
 
 namespace ModelUtilities

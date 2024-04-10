@@ -12,7 +12,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-std::vector<Texture>& TextureBuilder::CreateTextureFromMaterial(
+std::vector<Texture> TextureBuilder::CreateTextureFromMaterial(
     aiMaterial* Material, aiTextureType Type, ETextureType TextureType, std::string Directory)
 {
     std::vector<Texture> Textures;

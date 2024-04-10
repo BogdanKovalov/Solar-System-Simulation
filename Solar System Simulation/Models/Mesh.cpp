@@ -44,6 +44,7 @@ void Mesh::Draw(Shader& Shader)
 {
     GLuint DiffuseNum = 1;
     GLuint SpecularNum = 1;
+    GLuint NormalNum = 1;
 
     for (GLuint i = 0; i < Textures.size(); ++i)
     {
@@ -59,8 +60,12 @@ void Mesh::Draw(Shader& Shader)
         {
             Number = std::to_string(SpecularNum++);
         }
+        if (Textures[i].Type == ETextureType::NORMAL)
+        {
+            Number = std::to_string(NormalNum++);
+        }
 
-        Shader.SetInt(("Material." + Name + Number).c_str(), i);
+        Shader.SetInt(("MeshMaterial." + Name + Number).c_str(), i);
         glBindTexture(GL_TEXTURE_2D, Textures[i].ID);
     }
 

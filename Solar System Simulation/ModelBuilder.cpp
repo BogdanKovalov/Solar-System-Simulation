@@ -103,5 +103,9 @@ void ModelBuilder::GetTextures(aiMesh* AssimpMesh, aiScene const* Scene)
         std::vector<Texture> SpecularMaps =
             TexBuilder.CreateTextureFromMaterial(Material, aiTextureType_SPECULAR, ETextureType::SPECULAR, ImportingDirectory);
         Textures.insert(Textures.end(), SpecularMaps.begin(), SpecularMaps.end());
+
+        std::vector<Texture> NormalMaps =
+            TexBuilder.CreateTextureFromMaterial(Material, aiTextureType_HEIGHT, ETextureType::NORMAL, ImportingDirectory);
+        Textures.insert(Textures.end(), NormalMaps.begin(), NormalMaps.end());
     }
 }
