@@ -2,7 +2,7 @@
 #include "Models/Model.h"
 #include "Models/Mesh.h"
 #include "ModelUtilities.h"
-#include "TextureBuilder.h"
+#include "MaterialBuilder.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -58,8 +58,8 @@ std::shared_ptr<Mesh> ModelBuilder::CreateMesh(aiMesh* AssimpMesh, aiScene const
 {
     GetVertices(AssimpMesh);
     GetIndices(AssimpMesh);
-    GetTextures(AssimpMesh, Scene);
-    return std::shared_ptr<Mesh>(new Mesh(Vertices, Indices, Textures));
+    auto MeshMaterial = GetMaterial(AssimpMesh, Scene);
+    return std::shared_ptr<Mesh>(new Mesh(Vertices, Indices, MeshMaterial));
 }
 void ModelBuilder::GetVertices(aiMesh* AssimpMesh)
 {
@@ -90,22 +90,8 @@ void ModelBuilder::GetIndices(aiMesh* AssimpMesh)
     }
 }
 
-void ModelBuilder::GetTextures(aiMesh* AssimpMesh, aiScene const* Scene)
+std::shared_ptr<Material> ModelBuilder::GetMaterial(aiMesh* AssimpMesh, aiScene const* Scene)
 {
-    TextureBuilder TexBuilder;
-    if (AssimpMesh->mMaterialIndex >= 0)
-    {
-        aiMaterial* Material = Scene->mMaterials[AssimpMesh->mMaterialIndex];
-        std::vector<Texture> DiffuseMaps =
-            TexBuilder.CreateTextureFromMaterial(Material, aiTextureType_DIFFUSE, ETextureType::DIFFUSE, ImportingDirectory);
-        Textures.insert(Textures.end(), DiffuseMaps.begin(), DiffuseMaps.end());
-
-        std::vector<Texture> SpecularMaps =
-            TexBuilder.CreateTextureFromMaterial(Material, aiTextureType_SPECULAR, ETextureType::SPECULAR, ImportingDirectory);
-        Textures.insert(Textures.end(), SpecularMaps.begin(), SpecularMaps.end());
-
-        std::vector<Texture> NormalMaps =
-            TexBuilder.CreateTextureFromMaterial(Material, aiTextureType_HEIGHT, ETextureType::NORMAL, ImportingDirectory);
-        Textures.insert(Textures.end(), NormalMaps.begin(), NormalMaps.end());
-    }
+    MaterialBuilder MatBuilder;
+    return MatBuilder.CreateMaterialFromAssimpMaterial(Scene->mMaterials[AssimpMesh->mMaterialIndex], ImportingDirectory);
 }

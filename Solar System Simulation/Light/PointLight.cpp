@@ -18,7 +18,7 @@ float PointLight::GetLinearCoef(float Distance)
 
 float PointLight::GetQuadraticCoef(float Distance)
 {
-    return 97.79f / (pow(Distance, 2)) - 1.48f / Distance + 0.0097f;
+    return 97.79f / (float)(pow(Distance, 2)) - 1.48f / Distance + 0.0097f;
 }
 
 PointLight::PointLight(float InDistance, FLightAspects const& InLightAspects) : Light(InLightAspects) 

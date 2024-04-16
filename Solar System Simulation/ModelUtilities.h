@@ -3,21 +3,25 @@
 #define _MODEL_UTILITIES_H_
 
 #include <string>
+#include <vector>
 #include <glm/glm.hpp>
 #include <assimp/scene.h>
 
 enum class ETextureType
 {
-    DIFFUSE,
-    SPECULAR,
-    NORMAL
+    DIFFUSE = aiTextureType_DIFFUSE,
+    SPECULAR = aiTextureType_SPECULAR,
+    NORMAL = aiTextureType_NORMALS,
+    LAST
 };
 
 namespace ModelUtilities
 {
-    std::string TypeToString(ETextureType Type);
-    glm::vec3 GetGLMVec(aiVector3D AssimpVector);
-} 
+std::string TypeToString(ETextureType Type);
+glm::vec3 GetGLMVec(aiVector3D AssimpVector);
+
+const std::initializer_list<ETextureType> AllTextureTypes = {ETextureType::DIFFUSE, ETextureType::SPECULAR, ETextureType::NORMAL};
+}  // namespace ModelUtilities
 
 struct Vertex
 {
@@ -29,7 +33,6 @@ struct Vertex
 struct Texture
 {
     unsigned int ID;
-    ETextureType Type;
     std::string Path;
 };
 

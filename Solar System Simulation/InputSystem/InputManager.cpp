@@ -1,5 +1,5 @@
 #include "InputManager.h"
-#include "Types.h"
+#include "../Types.h"
 #include "InputAction.h"
 
 void InputManager::AddInputAction(InputAction* Action) 

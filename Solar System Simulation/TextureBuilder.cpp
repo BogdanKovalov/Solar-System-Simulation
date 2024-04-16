@@ -4,7 +4,6 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
-#define STB_IMAGE_IMPLEMENTATION
 #include <Image/stb_image.h>
 
 #define GLEW_STATIC
@@ -35,7 +34,6 @@ std::vector<Texture> TextureBuilder::CreateTextureFromMaterial(
         {
             Texture NewTexture;
             NewTexture.ID = ImportTexture(Directory + LocalPath.C_Str());
-            NewTexture.Type = TextureType;
             NewTexture.Path = LocalPath.C_Str();
             Textures.push_back(NewTexture);
             LoadedTextures.push_back(NewTexture);

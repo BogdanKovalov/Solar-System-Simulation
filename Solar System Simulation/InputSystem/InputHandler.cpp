@@ -1,5 +1,5 @@
 #include "InputHandler.h"
-#include "Types.h"
+#include "../Types.h"
 #include "glm/glm.hpp"
 
 /* void InputHandler::Bind(ETrigger Trigger, ETriggerEvent TriggerEvent, std::function<void(FInputValue const&)> CallToBind)

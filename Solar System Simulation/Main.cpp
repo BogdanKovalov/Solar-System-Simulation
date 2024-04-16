@@ -384,7 +384,7 @@ int main()
     MainShader.SetInt("MeshMaterial.Emission", 2);
     MainShader.SetFloat("MeshMaterial.Shininess", 64);
 
-    PointLight Light(1000.0f, glm::vec3(0.5f), glm::vec3(0.5f),glm::vec3(1.0f));
+    PointLight Light(1000.0f, glm::vec3(0.1f), glm::vec3(1.0f),glm::vec3(0.3f));
     SpotLight SpotLight(glm::vec3(0.0f, 0.0f, -1.0f), 12.5f, 17.5f);
     SpotLight.SetLocation(glm::vec3(0.0f, 0.0f, 1.0f));
 
@@ -424,7 +424,7 @@ int main()
     BackpackShader.SetVec3("PointLight.Specular", Light.GetSpecularAspect());
     BackpackShader.SetFloat("PointLight.LinearCoef", Light.GetLinearCoef());
     BackpackShader.SetFloat("PointLight.QuadraticCoef", Light.GetQuadraticCoef());
-    BackpackShader.SetFloat("MeshMaterial.Shininess", 10);
+    BackpackShader.SetFloat("MeshMaterial.Shininess", 1);
 
     while (!glfwWindowShouldClose(MainWindow->GetGLWindow()))
     {
@@ -433,7 +433,7 @@ int main()
 
         glfwPollEvents();
 
-        API1->Tick(DeltaTime);
+        API1->Tick((float)DeltaTime);
 
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);

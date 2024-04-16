@@ -1,15 +1,16 @@
 #include "Mesh.h"
 #include "../Shader.h"
+#include "../Material.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-Mesh::Mesh(std::vector<Vertex> InVertices, std::vector<GLuint> InIndices, std::vector<Texture> InTextures)
+Mesh::Mesh(std::vector<Vertex> InVertices, std::vector<GLuint> InIndices, std::shared_ptr<Material> MeshMaterial)
 {
     Vertices = InVertices;
     Indices = InIndices;
-    Textures = InTextures;
+    this->MeshMaterial = MeshMaterial;
 
     SetupMesh();
 }
@@ -42,33 +43,24 @@ void Mesh::SetupMesh()
 
 void Mesh::Draw(Shader& Shader)
 {
-    GLuint DiffuseNum = 1;
-    GLuint SpecularNum = 1;
-    GLuint NormalNum = 1;
-
-    for (GLuint i = 0; i < Textures.size(); ++i)
+    if (!MeshMaterial)
     {
-        glActiveTexture(GL_TEXTURE0 + i);
-
-        std::string Number;
-        std::string Name = ModelUtilities::TypeToString(Textures[i].Type);
-        if (Textures[i].Type == ETextureType::DIFFUSE)
-        {
-            Number = std::to_string(DiffuseNum++);
-        }
-        if (Textures[i].Type == ETextureType::SPECULAR)
-        {
-            Number = std::to_string(SpecularNum++);
-        }
-        if (Textures[i].Type == ETextureType::NORMAL)
-        {
-            Number = std::to_string(NormalNum++);
-        }
-
-        Shader.SetInt(("MeshMaterial." + Name + Number).c_str(), i);
-        glBindTexture(GL_TEXTURE_2D, Textures[i].ID);
+        return;
     }
+    GLuint NumLoadedTextures = 0;
 
+    for (auto TextureType : ModelUtilities::AllTextureTypes)
+    {
+        auto Textures = MeshMaterial->GetTextureByType(TextureType);
+        for (int i = 0; i < MeshMaterial->GetNumTexturesByType(TextureType); ++i)
+        {
+            glActiveTexture(GL_TEXTURE0 + NumLoadedTextures);
+            std::string TextureName = ModelUtilities::TypeToString(TextureType);
+            Shader.SetInt(("MeshMaterial." + TextureName + std::to_string(i)).c_str(), NumLoadedTextures++);
+            glBindTexture(GL_TEXTURE_2D, Textures->second.ID);
+            ++Textures;
+        }
+    }
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);

@@ -13,6 +13,7 @@ struct Texture;
 struct Vertex;
 class Model;
 class Mesh;
+class Material;
 
 struct aiNode;
 struct aiScene;
@@ -41,7 +42,7 @@ private:
     
     void GetVertices(aiMesh* AssimpMesh);
     void GetIndices(aiMesh* AssimpMesh);
-    void GetTextures(aiMesh* AssimpMesh, aiScene const* Scene);
+    std::shared_ptr<Material> GetMaterial(aiMesh* AssimpMesh, aiScene const* Scene);
 };
 
 #endif

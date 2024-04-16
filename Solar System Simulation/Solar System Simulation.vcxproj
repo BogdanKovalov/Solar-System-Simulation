@@ -150,6 +150,8 @@
     <ClCompile Include="Light\PointLight.cpp" />
     <ClCompile Include="Light\SpotLight.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Material.cpp" />
+    <ClCompile Include="MaterialBuilder.cpp" />
     <ClCompile Include="ModelBuilder.cpp" />
     <ClCompile Include="Models\Mesh.cpp" />
     <ClCompile Include="Models\Model.cpp" />
@@ -171,6 +173,8 @@
     <ClInclude Include="Light\Light.h" />
     <ClInclude Include="Light\PointLight.h" />
     <ClInclude Include="Light\SpotLight.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="MaterialBuilder.h" />
     <ClInclude Include="ModelBuilder.h" />
     <ClInclude Include="Models\Mesh.h" />
     <ClInclude Include="Models\Model.h" />

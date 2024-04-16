@@ -1,6 +1,6 @@
 #include "InputAction.h"
 #include "InputManager.h"
-#include "Aplication.h"
+#include "../Aplication.h"
 
 InputAction::InputAction() 
 {

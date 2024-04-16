@@ -7,7 +7,7 @@
 #include <memory>
 #include <functional>
 
-#include "Types.h"
+#include "../Types.h"
 #include "InputAction.h"
 
 class InputAction;

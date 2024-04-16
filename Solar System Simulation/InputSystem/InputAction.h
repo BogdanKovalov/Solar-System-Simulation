@@ -2,7 +2,7 @@
 #ifndef _INPUT_ACTION_H_
 #define _INPUT_ACTION_H_
 
-#include "Types.h"
+#include "../Types.h"
 #include <map>
 #include <memory>
 #include <functional>

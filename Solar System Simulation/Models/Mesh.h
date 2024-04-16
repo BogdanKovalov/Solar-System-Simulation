@@ -5,8 +5,11 @@
 #include <glm/glm.hpp>
 #include <string>
 #include <vector>
+#include <memory>
 
 #include "../ModelUtilities.h"
+
+class Material;
 
 typedef unsigned int GLuint;
 class Shader;
@@ -14,7 +17,7 @@ class Shader;
 class Mesh
 {
 public:
-    Mesh(std::vector<Vertex> InVertices, std::vector<GLuint> InIndices, std::vector<Texture> InTextures);
+    Mesh(std::vector<Vertex> InVertices, std::vector<GLuint> InIndices, std::shared_ptr<Material> MeshMaterial);
     void Draw(Shader& Shader);
 
 private:
@@ -23,10 +26,11 @@ private:
     GLuint EBO;
 
     std::vector<Vertex> Vertices;
-    std::vector<Texture> Textures;
+    // std::vector<Texture> Textures;
+    std::shared_ptr<Material> MeshMaterial;
     std::vector<GLuint> Indices;
 
-   private:
+private:
     void SetupMesh();
 };
 
