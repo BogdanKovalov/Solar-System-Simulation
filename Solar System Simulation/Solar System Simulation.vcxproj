@@ -158,7 +158,6 @@
     <ClCompile Include="ModelUtilities.cpp" />
     <ClCompile Include="Pawn.cpp" />
     <ClCompile Include="Shader.cpp" />
-    <ClCompile Include="TextureBuilder.cpp" />
     <ClCompile Include="TickObject.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
@@ -181,7 +180,6 @@
     <ClInclude Include="ModelUtilities.h" />
     <ClInclude Include="Pawn.h" />
     <ClInclude Include="Shader.h" />
-    <ClInclude Include="TextureBuilder.h" />
     <ClInclude Include="TickObject.h" />
     <ClInclude Include="Types.h" />
     <ClInclude Include="Window.h" />
