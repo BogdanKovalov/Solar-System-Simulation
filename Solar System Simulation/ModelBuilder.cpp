@@ -92,6 +92,6 @@ void ModelBuilder::GetIndices(aiMesh* AssimpMesh)
 
 std::shared_ptr<Material> ModelBuilder::GetMaterial(aiMesh* AssimpMesh, aiScene const* Scene)
 {
-    MaterialBuilder MatBuilder;
+    MaterialBuilder MatBuilder(DefaultShader);
     return MatBuilder.CreateMaterialFromAssimpMaterial(Scene->mMaterials[AssimpMesh->mMaterialIndex], ImportingDirectory);
 }

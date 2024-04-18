@@ -14,6 +14,7 @@ struct Vertex;
 class Model;
 class Mesh;
 class Material;
+class Shader;
 
 struct aiNode;
 struct aiScene;
@@ -24,11 +25,14 @@ typedef unsigned int GLuint;
 class ModelBuilder
 {
 public:
+    ModelBuilder() = delete;
+    ModelBuilder(std::shared_ptr<Shader> InDefaultShader) : DefaultShader(InDefaultShader){};
     std::shared_ptr<Model> ImportModel(std::string PathToModel);
 
 private:
     std::string ImportingDirectory;
     std::shared_ptr<Model> CreatingModel;
+    std::shared_ptr<Shader> DefaultShader;
 
     std::vector<Vertex> Vertices;
     std::vector<GLuint> Indices;

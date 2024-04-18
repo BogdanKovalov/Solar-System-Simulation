@@ -41,7 +41,7 @@ void Mesh::SetupMesh()
     glBindVertexArray(0);
 }
 
-void Mesh::Draw(Shader& Shader)
+void Mesh::Draw()
 {
     if (!MeshMaterial)
     {
@@ -49,18 +49,7 @@ void Mesh::Draw(Shader& Shader)
     }
     GLuint NumLoadedTextures = 0;
 
-    for (auto TextureType : ModelUtilities::AllTextureTypes)
-    {
-        auto Textures = MeshMaterial->GetTextureByType(TextureType);
-        for (int i = 0; i < MeshMaterial->GetNumTexturesByType(TextureType); ++i)
-        {
-            glActiveTexture(GL_TEXTURE0 + NumLoadedTextures);
-            std::string TextureName = ModelUtilities::TypeToString(TextureType);
-            Shader.SetInt(("MeshMaterial." + TextureName + std::to_string(i)).c_str(), NumLoadedTextures++);
-            glBindTexture(GL_TEXTURE_2D, Textures->second.ID);
-            ++Textures;
-        }
-    }
+    MeshMaterial->LoadTexturesToShader();
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
     glBindVertexArray(0);

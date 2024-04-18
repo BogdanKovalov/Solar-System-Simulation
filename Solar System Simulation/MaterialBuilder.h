@@ -6,16 +6,20 @@
 #include <string>
 
 class Material;
+class Shader;
 struct aiMaterial;
 struct Texture;
 
 class MaterialBuilder
 {
 public:
+    MaterialBuilder() = delete;
+    MaterialBuilder(std::shared_ptr<Shader> InDefaultShader) : DefaultShader(InDefaultShader){};
     std::shared_ptr<Material> CreateMaterialFromAssimpMaterial(aiMaterial* AssimpMaterial, std::string Directory);
 
 private:
     std::string ImportingDirectory;
+    std::shared_ptr<Shader> DefaultShader;
 
 private:
     Texture CreateTexture(std::string LocalPath);

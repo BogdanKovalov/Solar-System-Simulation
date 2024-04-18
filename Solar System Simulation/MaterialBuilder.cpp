@@ -15,7 +15,7 @@
 
 std::shared_ptr<Material> MaterialBuilder::CreateMaterialFromAssimpMaterial(aiMaterial* AssimpMaterial, std::string Directory)
 {
-    std::shared_ptr<Material> CreatedMaterial(new Material);
+    std::shared_ptr<Material> CreatedMaterial(new Material(DefaultShader));
     ImportingDirectory = Directory;
     auto MaterialProperties = AssimpMaterial->mProperties;
     for (GLuint i = 0; i < AssimpMaterial->mNumProperties; ++i)
@@ -53,19 +53,7 @@ Texture MaterialBuilder::CreateTexture(std::string LocalPath)
         return NewTexture;
     }
 
-    GLenum Format = 0;
-    if (NumComponents == 1)
-    {
-        Format = GL_RED;
-    }
-    else if (NumComponents == 3)
-    {
-        Format = GL_RGB;
-    }
-    else if (NumComponents == 4)
-    {
-        Format = GL_RGBA;
-    }
+    GLenum Format = ModelUtilities::GetTextureFormatFromComponents(NumComponents);
 
     glBindTexture(GL_TEXTURE_2D, NewTexture.ID);
     glTexImage2D(GL_TEXTURE_2D, 0, Format, Width, Height, 0, Format, GL_UNSIGNED_BYTE, data);

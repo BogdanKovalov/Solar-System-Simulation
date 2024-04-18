@@ -16,7 +16,7 @@ public:
     Model(){};
 
     inline void AddMesh(std::shared_ptr<Mesh> NewMesh) { Meshes.push_back(NewMesh); }
-    void Draw(Shader& Shader);
+    void Draw();
 
 private:
     std::vector<std::shared_ptr<Mesh>> Meshes;

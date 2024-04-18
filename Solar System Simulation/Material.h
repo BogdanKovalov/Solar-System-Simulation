@@ -6,17 +6,22 @@
 #include "ModelUtilities.h"
 
 #include <unordered_map>
+#include <memory>
 
 class Shader;
 
 class Material
 {
 public:
-    auto GetTextureByType(ETextureType Type) { return TypeTextureMap.find(Type); }
+    Material() = delete;
+    Material(std::shared_ptr<Shader> Shader) : UsingShader(Shader){};
+
+    void LoadTexturesToShader();
+
     bool IsTextureLoaded(ETextureType Type, std::string LocalPath);
-    size_t GetNumTexturesByType(ETextureType Type) { return TypeTextureMap.count(Type); }
     void AddTexture(ETextureType NewType, Texture NewTexture) { TypeTextureMap.emplace(NewType, NewTexture); }
-    Shader* GetShader() { return UsingShader; }
+
+    std::shared_ptr<Shader> GetShader() { return UsingShader; }
 
 private:
     glm::vec3 AmbientColor;
@@ -26,7 +31,11 @@ private:
 
     std::unordered_map<ETextureType, Texture> TypeTextureMap;
 
-    Shader* UsingShader;
+    std::shared_ptr<Shader> UsingShader;
+
+private:
+    auto GetTextureByType(ETextureType Type) { return TypeTextureMap.find(Type); }
+    size_t GetNumTexturesByType(ETextureType Type) { return TypeTextureMap.count(Type); }
 };
 
 class TexturedMaterial : public Material

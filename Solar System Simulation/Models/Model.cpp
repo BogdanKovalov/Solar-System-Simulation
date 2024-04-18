@@ -1,7 +1,7 @@
 #include "Model.h"
 #include "Mesh.h"
 
-void Model::Draw(Shader& Shader) 
+void Model::Draw() 
 {
     for (GLuint i = 0; i < Meshes.size(); ++i)
     {
@@ -9,6 +9,6 @@ void Model::Draw(Shader& Shader)
         {
             continue;
         }
-        Meshes[i]->Draw(Shader);
+        Meshes[i]->Draw();
     }
 }

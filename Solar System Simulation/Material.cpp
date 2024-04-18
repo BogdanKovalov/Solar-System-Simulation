@@ -1,4 +1,34 @@
 #include "Material.h"
+#include "Shader.h"
+
+#define GLEW_STATIC
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
+
+typedef unsigned int GLuint;
+
+void Material::LoadTexturesToShader() 
+{
+    if (!UsingShader)
+    {
+        return;
+    }
+
+    GLuint NumLoadedTextures = 0;
+
+    for (auto TextureType : ModelUtilities::AllTextureTypes)
+    {
+        auto Textures = GetTextureByType(TextureType);
+        for (int i = 0; i < GetNumTexturesByType(TextureType); ++i)
+        {
+            glActiveTexture(GL_TEXTURE0 + NumLoadedTextures);
+            std::string TextureName = ModelUtilities::TypeToString(TextureType);
+            UsingShader->SetInt(("MeshMaterial." + TextureName + std::to_string(i)).c_str(), NumLoadedTextures++);
+            glBindTexture(GL_TEXTURE_2D, Textures->second.ID);
+            ++Textures;
+        }
+    }
+}
 
 bool Material::IsTextureLoaded(ETextureType Type, std::string LocalPath)
 {
