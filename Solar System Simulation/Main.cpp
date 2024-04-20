@@ -49,7 +49,7 @@ int main()
     std::shared_ptr<Shader> BackpackShader = std::shared_ptr<Shader>(new Shader("Shaders/Backpack.vert", "Shaders/Backpack.frag"));
 
     ModelBuilder Builder(BackpackShader);
-    auto Boy = Builder.ImportModel("Boy/Earth.obj");
+    auto Boy = Builder.ImportModel("../Models/Earth/Earth.obj");
 
     BackpackShader->SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
 
