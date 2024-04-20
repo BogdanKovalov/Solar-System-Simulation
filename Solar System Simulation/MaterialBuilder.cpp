@@ -16,6 +16,9 @@
 std::shared_ptr<Material> MaterialBuilder::CreateMaterialFromAssimpMaterial(aiMaterial* AssimpMaterial, std::string Directory)
 {
     std::shared_ptr<Material> CreatedMaterial(new Material(DefaultShader));
+
+    SetMaterialColors(AssimpMaterial, CreatedMaterial);
+
     ImportingDirectory = Directory;
     auto MaterialProperties = AssimpMaterial->mProperties;
     for (GLuint i = 0; i < AssimpMaterial->mNumProperties; ++i)
@@ -36,6 +39,20 @@ std::shared_ptr<Material> MaterialBuilder::CreateMaterialFromAssimpMaterial(aiMa
         CreatedMaterial->AddTexture(static_cast<ETextureType>(Type), NewTexture);
     }
     return CreatedMaterial;
+}
+
+void MaterialBuilder::SetMaterialColors(aiMaterial* AssimpMaterial, std::shared_ptr<Material> CreatingMaterial)
+{
+    aiColor4D Color;
+    aiGetMaterialColor(AssimpMaterial, AI_MATKEY_COLOR_AMBIENT, &Color);
+    CreatingMaterial->SetAmbientColor(ModelUtilities::GetGLMVecFromColor(Color));
+    aiGetMaterialColor(AssimpMaterial, AI_MATKEY_COLOR_DIFFUSE, &Color);
+    CreatingMaterial->SetDiffuseColor(ModelUtilities::GetGLMVecFromColor(Color));
+    aiGetMaterialColor(AssimpMaterial, AI_MATKEY_COLOR_SPECULAR, &Color);
+    CreatingMaterial->SetSpecularColor(ModelUtilities::GetGLMVecFromColor(Color));
+    float Shininess = 32;
+    aiGetMaterialFloat(AssimpMaterial, AI_MATKEY_SHININESS, &Shininess);
+    CreatingMaterial->SetShininess(Shininess);
 }
 
 Texture MaterialBuilder::CreateTexture(std::string LocalPath)

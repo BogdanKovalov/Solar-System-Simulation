@@ -23,10 +23,15 @@ public:
 
     std::shared_ptr<Shader> GetShader() { return UsingShader; }
 
+    void SetAmbientColor(glm::vec4 NewAmbientColor) { AmbientColor = NewAmbientColor; }
+    void SetDiffuseColor(glm::vec4 NewDiffuseColor) { DiffuseColor = NewDiffuseColor; }
+    void SetSpecularColor(glm::vec4 NewSpecularColor) { SpecularColor = NewSpecularColor; }
+    void SetShininess(float NewShininess) { Shininess = NewShininess; }
+
 private:
-    glm::vec3 AmbientColor;
-    glm::vec3 DiffuseColor;
-    glm::vec3 SpecularColor;
+    glm::vec4 AmbientColor;
+    glm::vec4 DiffuseColor;
+    glm::vec4 SpecularColor;
     float Shininess;
 
     std::unordered_map<ETextureType, Texture> TypeTextureMap;

@@ -21,6 +21,11 @@ glm::vec3 ModelUtilities::GetGLMVec(aiVector3D AssimpVector)
     return glm::vec3(AssimpVector.x, AssimpVector.y, AssimpVector.z);
 }
 
+glm::vec4 ModelUtilities::GetGLMVecFromColor(aiColor4D Color)
+{
+    return glm::vec4(Color.r, Color.g, Color.b, Color.a);
+}
+
 GLenum ModelUtilities::GetTextureFormatFromComponents(int NumComponents)
 {
     switch (NumComponents)

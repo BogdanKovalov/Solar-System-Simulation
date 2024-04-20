@@ -14,6 +14,11 @@ void Material::LoadTexturesToShader()
         return;
     }
 
+    UsingShader->SetVec4("MeshMaterial.Ambient", AmbientColor);
+    UsingShader->SetVec4("MeshMaterial.Diffuse", DiffuseColor);
+    UsingShader->SetVec4("MeshMaterial.Specular", SpecularColor);
+    UsingShader->SetFloat("MeshMaterial.Shininess", Shininess);
+
     GLuint NumLoadedTextures = 0;
 
     for (auto TextureType : ModelUtilities::AllTextureTypes)
@@ -21,6 +26,10 @@ void Material::LoadTexturesToShader()
         auto Textures = GetTextureByType(TextureType);
         for (int i = 0; i < GetNumTexturesByType(TextureType); ++i)
         {
+            if (TextureType == ETextureType::NORMAL)
+            {
+                UsingShader->SetBool("MeshMaterial.HasNormalMap", true);
+            }
             glActiveTexture(GL_TEXTURE0 + NumLoadedTextures);
             std::string TextureName = ModelUtilities::TypeToString(TextureType);
             UsingShader->SetInt(("MeshMaterial." + TextureName + std::to_string(i)).c_str(), NumLoadedTextures++);

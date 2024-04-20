@@ -26,23 +26,19 @@ int main()
     // API1->CreateWindow(1000, 1000, "Solar System Simulation", nullptr, nullptr);
     auto MainWindow = API1->GetWindow();
 
-    Shader LightShader("Shaders/Vertex.vert", "Shaders/LightFragment.frag");
-
     glm::mat4 ModelMatrix(1.0f);
-    ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -0.5f, 0.0f));
+    ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -2.0f, 0.0f));
     // ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-45.0f), glm::vec3(1.0f, 1.0f, 0.0f));
-    ModelMatrix = glm::scale(ModelMatrix, glm::vec3(0.25f));
+    ModelMatrix = glm::scale(ModelMatrix, glm::vec3(1.0f));
 
     int Width = MainWindow->GetWidth();
     int Height = MainWindow->GetHeight();
     glm::mat4 ProjectionMatrix(1.0f);
     ProjectionMatrix = glm::perspective(glm::radians(45.0f), (float)Width / Height, 0.1f, 100.0f);
 
-    PointLight Light(1000.0f, glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(0.3f));
+    PointLight Light(1000.0f, glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f));
     SpotLight SpotLight(glm::vec3(0.0f, 0.0f, -1.0f), 12.5f, 17.5f);
     SpotLight.SetLocation(glm::vec3(0.0f, 0.0f, 1.0f));
-
-    LightShader.SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
@@ -53,7 +49,7 @@ int main()
     std::shared_ptr<Shader> BackpackShader = std::shared_ptr<Shader>(new Shader("Shaders/Backpack.vert", "Shaders/Backpack.frag"));
 
     ModelBuilder Builder(BackpackShader);
-    auto Boy = Builder.ImportModel("Boy/Super_meatboy_free.obj");
+    auto Boy = Builder.ImportModel("Boy/Earth.obj");
 
     BackpackShader->SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
 
@@ -62,7 +58,9 @@ int main()
     BackpackShader->SetVec3("PointLight.Specular", Light.GetSpecularAspect());
     BackpackShader->SetFloat("PointLight.LinearCoef", Light.GetLinearCoef());
     BackpackShader->SetFloat("PointLight.QuadraticCoef", Light.GetQuadraticCoef());
-    BackpackShader->SetFloat("MeshMaterial.Shininess", 1);
+    Light.SetLocation(glm::vec3(0.0f, 0.0f, 1.0f));
+    BackpackShader->SetVec3("PointLight.Location", Light.GetLocation());
+    BackpackShader->SetMatrix3("NormalMatrix", glm::value_ptr(glm::mat3(glm::transpose(glm::inverse(ModelMatrix)))));
 
     while (!glfwWindowShouldClose(MainWindow->GetGLWindow()))
     {
@@ -76,11 +74,8 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        Light.SetLocation(glm::vec3(cos(25 * glm::radians(LastTime)), sin(25 * glm::radians(LastTime)), 1.0f));
-
         BackpackShader->SetMatrix4("ViewMatrix", glm::value_ptr(MainWindow->GetView()));
         BackpackShader->SetMatrix4("ModelMatrix", glm::value_ptr(ModelMatrix));
-        BackpackShader->SetVec3("PointLight.Location", Light.GetLocation());
         BackpackShader->SetVec3("ViewPos", MainWindow->GetCameraLocation());
         Boy->Draw();
 

@@ -10,11 +10,12 @@ out vec3 Normal;
 uniform mat4 ModelMatrix;
 uniform mat4 ViewMatrix;
 uniform mat4 ProjectionMatrix;
+uniform mat3 NormalMatrix;
 
 void main()
 {
     TextureCoord = InTextureCoords;
-    Normal = InNormal;
+    Normal = normalize(NormalMatrix * InNormal);
     FragmentPos = vec3(ModelMatrix * vec4(InPos, 1.0));
     gl_Position = ProjectionMatrix * ViewMatrix * ModelMatrix * vec4(InPos, 1.0);
 }

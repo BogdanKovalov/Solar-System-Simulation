@@ -13,7 +13,7 @@ enum class ETextureType
 {
     DIFFUSE = aiTextureType_DIFFUSE,
     SPECULAR = aiTextureType_SPECULAR,
-    NORMAL = aiTextureType_NORMALS,
+    NORMAL = aiTextureType_HEIGHT,
 };
 
 struct Vertex
@@ -33,6 +33,7 @@ namespace ModelUtilities
 {
     std::string TypeToString(ETextureType Type);
     glm::vec3 GetGLMVec(aiVector3D AssimpVector);
+    glm::vec4 GetGLMVecFromColor(aiColor4D Color);
     GLenum GetTextureFormatFromComponents(int NumComponents);
 
     const std::initializer_list<ETextureType> AllTextureTypes = {ETextureType::DIFFUSE, ETextureType::SPECULAR, ETextureType::NORMAL};

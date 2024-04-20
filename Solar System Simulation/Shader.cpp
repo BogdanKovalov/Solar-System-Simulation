@@ -99,6 +99,12 @@ void Shader::SetVec3(const GLchar* Name, glm::vec3 Vec3)
     glUniform3f(glGetUniformLocation(Program, Name), Vec3.x, Vec3.y, Vec3.z);
 }
 
+void Shader::SetVec4(const GLchar* Name, glm::vec4 Vec) 
+{
+    Use();
+    glUniform4f(glGetUniformLocation(Program, Name), Vec.x, Vec.y, Vec.z, Vec.w);
+}
+
 void Shader::SetInt(const GLchar* Name, const GLint Int) 
 {
     Use();
@@ -110,6 +116,12 @@ void Shader::SetFloat(const GLchar* Name, const GLfloat Float)
 {
     Use();
     glUniform1f(glGetUniformLocation(Program, Name), Float);
+}
+
+void Shader::SetBool(const GLchar* Name, const bool Bool)
+{
+    Use();
+    glUniform1i(glGetUniformLocation(Program, Name), Bool);
 }
 
 void Shader::Use()

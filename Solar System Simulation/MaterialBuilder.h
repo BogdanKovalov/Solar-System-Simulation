@@ -22,6 +22,7 @@ private:
     std::shared_ptr<Shader> DefaultShader;
 
 private:
+    void SetMaterialColors(aiMaterial* AssimpMaterial, std::shared_ptr<Material> CreatingMaterial);
     Texture CreateTexture(std::string LocalPath);
 };
 

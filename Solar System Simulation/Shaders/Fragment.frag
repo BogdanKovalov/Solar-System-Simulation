@@ -55,8 +55,8 @@ vec4 GetPointLightInfluence(const PointLightProperties Light)
 
 	vec3 ViewDirection = normalize(ViewPos - FragmentPos);
 	vec3 ReflectDirection = reflect(-LightDirection, normalize(Normal));
-	float SpecularStrenght = pow(max(dot(ViewDirection, ReflectDirection), 0.0f), MeshMaterial.Shininess);
-	vec3 SpecularComponent = SpecularStrenght * vec3(texture(MeshMaterial.Specular, textureCoord)) * Light.Specular;
+	float SpecularStrenght = pow(max(dot(ViewDirection, ReflectDirection), 612), MeshMaterial.Shininess);
+	vec3 SpecularComponent = SpecularStrenght * vec3(texture(MeshMaterial.Specular, textureCoord)) * Light.Specular * MeshMaterial.Specular;
 
 	float EmissionStrenght = floor(1 - length(vec3(texture(MeshMaterial.Specular, textureCoord))));
 
