@@ -23,13 +23,7 @@
 int main()
 {
     Aplication* API1 = new Aplication;
-    // API1->CreateWindow(1000, 1000, "Solar System Simulation", nullptr, nullptr);
     auto MainWindow = API1->GetWindow();
-
-    glm::mat4 ModelMatrix(1.0f);
-    ModelMatrix = glm::translate(ModelMatrix, glm::vec3(0.0f, -2.0f, 0.0f));
-    // ModelMatrix = glm::rotate(ModelMatrix, glm::radians(-45.0f), glm::vec3(1.0f, 1.0f, 0.0f));
-    ModelMatrix = glm::scale(ModelMatrix, glm::vec3(1.0f));
 
     int Width = MainWindow->GetWidth();
     int Height = MainWindow->GetHeight();
@@ -49,7 +43,8 @@ int main()
     std::shared_ptr<Shader> BackpackShader = std::shared_ptr<Shader>(new Shader("Shaders/Backpack.vert", "Shaders/Backpack.frag"));
 
     ModelBuilder Builder(BackpackShader);
-    auto Boy = Builder.ImportModel("../Models/Earth/Earth.obj");
+    auto Earth = Builder.ImportModel("../Models/Earth/Earth.obj");
+    Earth->SetLocation(glm::vec3(0.0f, -2.0f, 0.0f));
 
     BackpackShader->SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
 
@@ -60,7 +55,6 @@ int main()
     BackpackShader->SetFloat("PointLight.QuadraticCoef", Light.GetQuadraticCoef());
     Light.SetLocation(glm::vec3(0.0f, 0.0f, 1.0f));
     BackpackShader->SetVec3("PointLight.Location", Light.GetLocation());
-    BackpackShader->SetMatrix3("NormalMatrix", glm::value_ptr(glm::mat3(glm::transpose(glm::inverse(ModelMatrix)))));
 
     while (!glfwWindowShouldClose(MainWindow->GetGLWindow()))
     {
@@ -75,9 +69,8 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         BackpackShader->SetMatrix4("ViewMatrix", glm::value_ptr(MainWindow->GetView()));
-        BackpackShader->SetMatrix4("ModelMatrix", glm::value_ptr(ModelMatrix));
         BackpackShader->SetVec3("ViewPos", MainWindow->GetCameraLocation());
-        Boy->Draw();
+        Earth->Draw();
 
         glfwSwapBuffers(MainWindow->GetGLWindow());
     }

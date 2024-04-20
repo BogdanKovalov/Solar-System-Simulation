@@ -18,7 +18,10 @@ class Mesh
 {
 public:
     Mesh(std::vector<Vertex> InVertices, std::vector<GLuint> InIndices, std::shared_ptr<Material> MeshMaterial);
+
     void Draw();
+
+    std::shared_ptr<Shader> GetMaterialShader() const;
 
 private:
     GLuint VAO;

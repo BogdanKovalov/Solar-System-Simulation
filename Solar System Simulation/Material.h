@@ -21,7 +21,7 @@ public:
     bool IsTextureLoaded(ETextureType Type, std::string LocalPath);
     void AddTexture(ETextureType NewType, Texture NewTexture) { TypeTextureMap.emplace(NewType, NewTexture); }
 
-    std::shared_ptr<Shader> GetShader() { return UsingShader; }
+    std::shared_ptr<Shader> GetShader() const { return UsingShader; }
 
     void SetAmbientColor(glm::vec4 NewAmbientColor) { AmbientColor = NewAmbientColor; }
     void SetDiffuseColor(glm::vec4 NewDiffuseColor) { DiffuseColor = NewDiffuseColor; }

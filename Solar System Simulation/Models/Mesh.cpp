@@ -56,3 +56,8 @@ void Mesh::Draw()
 
     glActiveTexture(GL_TEXTURE0);
 }
+
+std::shared_ptr<Shader> Mesh::GetMaterialShader() const
+{
+    return MeshMaterial->GetShader();
+}
