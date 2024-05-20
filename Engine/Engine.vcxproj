@@ -161,17 +161,14 @@
     <ClInclude Include="Source\Light\Light.h" />
     <ClInclude Include="Source\Light\PointLight.h" />
     <ClInclude Include="Source\Light\SpotLight.h" />
-    <ClInclude Include="Source\Material.h" />
-    <ClInclude Include="Source\MaterialBuilder.h" />
-    <ClInclude Include="Source\ModelBuilder.h" />
-    <ClInclude Include="Source\ModelSystem.h" />
-    <ClInclude Include="Source\ModelUtilities.h" />
+    <ClInclude Include="Source\Models\Material.h" />
+    <ClInclude Include="Source\Models\MaterialBuilder.h" />
     <ClInclude Include="Source\Models\Mesh.h" />
     <ClInclude Include="Source\Models\Model.h" />
     <ClInclude Include="Source\Models\ModelBuilder.h" />
+    <ClInclude Include="Source\Models\ModelUtilities.h" />
     <ClInclude Include="Source\Pawn.h" />
     <ClInclude Include="Source\Shader.h" />
-    <ClInclude Include="Source\System.h" />
     <ClInclude Include="Source\TickObject.h" />
     <ClInclude Include="Source\Types.h" />
     <ClInclude Include="Source\Window.h" />
@@ -188,16 +185,12 @@
     <ClCompile Include="Source\Light\Light.cpp" />
     <ClCompile Include="Source\Light\PointLight.cpp" />
     <ClCompile Include="Source\Light\SpotLight.cpp" />
-    <ClCompile Include="Source\Material.cpp" />
-    <ClCompile Include="Source\MaterialBuilder.cpp" />
-    <ClCompile Include="Source\ModelBuilder.cpp" />
-    <ClCompile Include="Source\ModelSystem.cpp" />
-    <ClCompile Include="Source\ModelUtilities.cpp" />
+    <ClCompile Include="Source\Models\Material.cpp" />
+    <ClCompile Include="Source\Models\MaterialBuilder.cpp" />
     <ClCompile Include="Source\Models\Mesh.cpp" />
     <ClCompile Include="Source\Models\Model.cpp" />
-    <ClCompile Include="Source\Models\ModelBuilder.cpp">
-      <ObjectFileName>$(IntDir)\ModelBuilder1.obj</ObjectFileName>
-    </ClCompile>
+    <ClCompile Include="Source\Models\ModelBuilder.cpp" />
+    <ClCompile Include="Source\Models\ModelUtilities.cpp" />
     <ClCompile Include="Source\Pawn.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
     <ClCompile Include="Source\TickObject.cpp" />

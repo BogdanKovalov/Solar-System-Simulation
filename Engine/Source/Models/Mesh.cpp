@@ -1,6 +1,6 @@
 #include "Mesh.h"
 #include "../Shader.h"
-#include "../Material.h"
+#include "Material.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>

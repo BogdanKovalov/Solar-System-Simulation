@@ -7,7 +7,7 @@
 #include <vector>
 #include <memory>
 
-#include "../ModelUtilities.h"
+#include "ModelUtilities.h"
 
 class Material;
 

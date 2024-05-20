@@ -12,7 +12,7 @@
 #include "Light/PointLight.h"
 #include "Light/SpotLight.h"
 #include "Models/Model.h"
-#include "ModelBuilder.h"
+#include "Models/ModelBuilder.h"
 
 #include <iostream>
 #include <unordered_set>

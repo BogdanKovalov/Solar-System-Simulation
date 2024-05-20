@@ -32,38 +32,22 @@ struct ContainerHash
 struct Component
 {
 public:
-    virtual void DummyFunction() = 0;
+    virtual void DummyFunction(){};
 };
 
 struct PositionComponent : public Component
 {
 public:
-    void DummyFunction() override{};
-
     int x;
     int y;
     int z;
 };
 
-struct DummyComponent : public Component
-{
-public:
-    void DummyFunction() override{};
-
-    int Dummy;
-};
 class Entity
 {
 private:
     EntityID ID;
     std::vector<ComponentID> Components;
-};
-
-struct Column
-{
-    void* Elements;
-    size_t ElementSize;
-    size_t Size;
 };
 
 struct Archetype
@@ -112,6 +96,9 @@ public:
     template <class ComponentType>
     bool HasComponent(EntityID Entity);
 
+    template <class ComponentType>
+    ComponentID GetComponentID();
+
 private:
     std::vector<EntityID> Entities;
     std::vector<EntityID> FreeEntities;
@@ -142,7 +129,7 @@ inline void World::AddComponent(EntityID Entity)
     std::shared_ptr<Record> FoundRecord = EntityRecordMap[Entity];
     std::shared_ptr<Archetype> SourceArchetype = FoundRecord->RecordArchetype;
 
-    ComponentID CompID = typeid(ComponentType).hash_code();
+    ComponentID CompID = GetComponentID<ComponentType>();
     ArchetypeType NewType = SourceArchetype->Type;
     if (std::find(NewType.begin(), NewType.end(), CompID) != NewType.end())
     {
@@ -169,7 +156,7 @@ inline ComponentType* World::GetComponent(EntityID Entity)
     std::shared_ptr<Record> FoundRecord = EntityRecordMap[Entity];
     std::shared_ptr<Archetype> FoundArchetype = FoundRecord->RecordArchetype;
 
-    ComponentID CompID = typeid(ComponentType).hash_code();
+    ComponentID CompID = GetComponentID<ComponentType>();
     ArchetypeMap& Archetypes = ComponentArchetypesMap[CompID];
     if (Archetypes.count(FoundArchetype->ID) == 0)
     {
@@ -183,7 +170,7 @@ inline ComponentType* World::GetComponent(EntityID Entity)
 template <class ComponentType>
 inline std::vector<ComponentType*>& World::GetAllComponents()
 {
-    ComponentID CompID = typeid(ComponentType).hash_code();
+    ComponentID CompID = GetComponentID<ComponentType>();
     ArchetypeMap& Archetypes = ComponentArchetypesMap[CompID];
 }
 
@@ -193,9 +180,15 @@ inline bool World::HasComponent(EntityID Entity)
     std::shared_ptr<Record> FoundRecord = EntityRecordMap[Entity];
     std::shared_ptr<Archetype> FoundArchetype = FoundRecord->RecordArchetype;
 
-    ComponentID CompID = typeid(ComponentType).hash_code();
+    ComponentID CompID = GetComponentID<ComponentType>();
     ArchetypeMap& Archetypes = ComponentArchetypesMap[CompID];
     return Archetypes.count(FoundArchetype->ID) != 0;
+}
+
+template <class ComponentType>
+inline ComponentID World::GetComponentID()
+{
+    return typeid(ComponentType).hash_code();
 }
 
 template <class ComponentType>
@@ -208,7 +201,7 @@ inline void World::MoveEntityToArchetype(EntityID ID, std::shared_ptr<Archetype>
     std::shared_ptr<Record> FoundRecord = EntityRecordMap[ID];
     std::shared_ptr<Archetype> SourceArchetype = FoundRecord->RecordArchetype;
 
-    ComponentID CompID = typeid(ComponentType).hash_code();
+    ComponentID CompID = GetComponentID<ComponentType>();
     std::vector<Component*> NewColumn;
     if (SourceArchetype->Components.size() != 0)
     {
