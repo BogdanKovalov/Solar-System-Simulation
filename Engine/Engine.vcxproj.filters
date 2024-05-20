@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="InputSystem">
+      <UniqueIdentifier>{FAE1B94B-6697-3241-EF8B-2C185B402945}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Light">
+      <UniqueIdentifier>{3D9E990D-A9B2-C1BE-7234-651EDE07BEEF}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Models">
+      <UniqueIdentifier>{096F8DC3-F510-B899-DECB-CBEDCA0C3FEA}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Source\Aplication.h" />
+    <ClInclude Include="Source\Camera.h" />
+    <ClInclude Include="Source\Controller.h" />
+    <ClInclude Include="Source\InputSystem\InputAction.h">
+      <Filter>InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputSystem\InputHandler.h">
+      <Filter>InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\InputSystem\InputManager.h">
+      <Filter>InputSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light\DirectionalLight.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light\Light.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light\PointLight.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Light\SpotLight.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Material.h" />
+    <ClInclude Include="Source\MaterialBuilder.h" />
+    <ClInclude Include="Source\ModelBuilder.h" />
+    <ClInclude Include="Source\ModelSystem.h" />
+    <ClInclude Include="Source\ModelUtilities.h" />
+    <ClInclude Include="Source\Models\Mesh.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Models\Model.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Models\ModelBuilder.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Pawn.h" />
+    <ClInclude Include="Source\Shader.h" />
+    <ClInclude Include="Source\System.h" />
+    <ClInclude Include="Source\TickObject.h" />
+    <ClInclude Include="Source\Types.h" />
+    <ClInclude Include="Source\Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source\Aplication.cpp" />
+    <ClCompile Include="Source\Camera.cpp" />
+    <ClCompile Include="Source\Controller.cpp" />
+    <ClCompile Include="Source\InputSystem\InputAction.cpp">
+      <Filter>InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputSystem\InputHandler.cpp">
+      <Filter>InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\InputSystem\InputManager.cpp">
+      <Filter>InputSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Light\DirectionalLight.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Light\Light.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Light\PointLight.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Light\SpotLight.cpp">
+      <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Material.cpp" />
+    <ClCompile Include="Source\MaterialBuilder.cpp" />
+    <ClCompile Include="Source\ModelBuilder.cpp" />
+    <ClCompile Include="Source\ModelSystem.cpp" />
+    <ClCompile Include="Source\ModelUtilities.cpp" />
+    <ClCompile Include="Source\Models\Mesh.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Models\Model.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Models\ModelBuilder.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Pawn.cpp" />
+    <ClCompile Include="Source\Shader.cpp" />
+    <ClCompile Include="Source\TickObject.cpp" />
+    <ClCompile Include="Source\Window.cpp" />
+  </ItemGroup>
+</Project>
