@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{60E1870B-CCEA-877C-5566-9E7CC16E937C}</UniqueIdentifier>
+    </Filter>
     <Filter Include="InputSystem">
       <UniqueIdentifier>{FAE1B94B-6697-3241-EF8B-2C185B402945}</UniqueIdentifier>
     </Filter>
@@ -15,6 +18,9 @@
     <ClInclude Include="Source\Aplication.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Controller.h" />
+    <ClInclude Include="Source\ECS\World.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
     <ClInclude Include="Source\InputSystem\InputAction.h">
       <Filter>InputSystem</Filter>
     </ClInclude>
@@ -61,6 +67,9 @@
     <ClCompile Include="Source\Aplication.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Controller.cpp" />
+    <ClCompile Include="Source\ECS\World.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
     <ClCompile Include="Source\InputSystem\InputAction.cpp">
       <Filter>InputSystem</Filter>
     </ClCompile>

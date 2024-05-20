@@ -153,6 +153,7 @@
     <ClInclude Include="Source\Aplication.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Controller.h" />
+    <ClInclude Include="Source\ECS\World.h" />
     <ClInclude Include="Source\InputSystem\InputAction.h" />
     <ClInclude Include="Source\InputSystem\InputHandler.h" />
     <ClInclude Include="Source\InputSystem\InputManager.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="Source\Aplication.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Controller.cpp" />
+    <ClCompile Include="Source\ECS\World.cpp" />
     <ClCompile Include="Source\InputSystem\InputAction.cpp" />
     <ClCompile Include="Source\InputSystem\InputHandler.cpp" />
     <ClCompile Include="Source\InputSystem\InputManager.cpp" />
