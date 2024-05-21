@@ -166,10 +166,13 @@
     <ClInclude Include="Source\Models\Mesh.h" />
     <ClInclude Include="Source\Models\Model.h" />
     <ClInclude Include="Source\Models\ModelBuilder.h" />
+    <ClInclude Include="Source\Models\ModelComponents.h" />
     <ClInclude Include="Source\Models\ModelUtilities.h" />
+    <ClInclude Include="Source\Models\RenderSystem.h" />
     <ClInclude Include="Source\Pawn.h" />
     <ClInclude Include="Source\Shader.h" />
-    <ClInclude Include="Source\TickObject.h" />
+    <ClInclude Include="Source\Systems\ISystem.h" />
+    <ClInclude Include="Source\Systems\Tick\TickSystem.h" />
     <ClInclude Include="Source\Types.h" />
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>
@@ -191,9 +194,10 @@
     <ClCompile Include="Source\Models\Model.cpp" />
     <ClCompile Include="Source\Models\ModelBuilder.cpp" />
     <ClCompile Include="Source\Models\ModelUtilities.cpp" />
+    <ClCompile Include="Source\Models\RenderSystem.cpp" />
     <ClCompile Include="Source\Pawn.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
-    <ClCompile Include="Source\TickObject.cpp" />
+    <ClCompile Include="Source\Systems\Tick\TickSystem.cpp" />
     <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -1,21 +1,31 @@
 #include "Pawn.h"
 #include "Camera.h"
 #include "InputSystem/InputHandler.h"
+#include "Aplication.h"
+#include "ECS/World.h"
+#include "Systems/Tick/TickSystem.h"
+#include <functional>
 
 #include <glm/gtc/matrix_transform.hpp>
 
-Pawn::Pawn(glm::vec3 Location, glm::vec3 Velocity)
+Pawn::Pawn(FObjectInitializer const& Initializer) : Entity(Initializer)
 {
-    this->Location = Location;
-    this->Velocity = Velocity;
+    PawnTickComponent = std::shared_ptr<TickComponent>(dynamic_cast<TickComponent*>(OwningWorld->AddComponent<TickComponent>(ID)));
+    PosComponent = std::shared_ptr<PositionComponent>(dynamic_cast<PositionComponent*>(OwningWorld->AddComponent<PositionComponent>(ID)));
 
-    AttachedCamera = std::shared_ptr<Camera>(new Camera(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f)));
+    PosComponent->Location = glm::vec3(0.0f, 0.0f,0.0f);
+    AttachedCamera = std::shared_ptr<Camera>(new Camera(PosComponent->Location, glm::vec3(0.0f, 0.0f, -1.0f)));
+
+    if (PawnTickComponent)
+    {
+        PawnTickComponent->TickFunction = std::bind(&Pawn::Tick, this, std::placeholders::_1);
+    }
 }
 
 void Pawn::Tick(float DeltaTime) 
 {
     AddOffset(Velocity * DeltaTime);
-    AttachedCamera->AddOffset(Velocity * DeltaTime);
+    /*AttachedCamera->AddOffset(Velocity * DeltaTime);*/
 }
 
 inline void Pawn::AddOffset(glm::vec3 Offset) 

@@ -9,7 +9,7 @@
 Controller::Controller()
 {
     InputComponent = std::shared_ptr<InputHandler>(new InputHandler());
-    ControlledPawn = std::shared_ptr<Pawn>(new Pawn(glm::vec3(0.0f, 0.0f, -3.0f)));
+    //ControlledPawn = std::shared_ptr<Pawn>(new Pawn(glm::vec3(0.0f, 0.0f, -3.0f)));
     MoveAction = std::shared_ptr<InputAction>(new InputAction());
     LookAction = std::shared_ptr<InputAction>(new InputAction());
     SetupInput();
@@ -24,7 +24,7 @@ void Controller::ProcessMouseMotion(double XPos, double YPos) {}
 
 void Controller::SetupInput()
 {
-    if (!InputComponent || !ControlledPawn)
+    if (!InputComponent)
     {
         return;
     }

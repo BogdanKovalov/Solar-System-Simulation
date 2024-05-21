@@ -1,4 +1,12 @@
 #include "World.h"
+#include "Aplication.h"
+
+Entity::Entity(FObjectInitializer const& Initializer) 
+{
+    OwningWorld = Initializer.OwningWorld;
+    ID = Initializer.ID;
+}
+
 
 EntityID World::CreateEntity()
 {

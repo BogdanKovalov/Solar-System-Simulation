@@ -13,6 +13,12 @@
     <Filter Include="Models">
       <UniqueIdentifier>{096F8DC3-F510-B899-DECB-CBEDCA0C3FEA}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{1DDE831B-89BD-02B7-92D5-8D8DFE336918}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems\Tick">
+      <UniqueIdentifier>{9793C6E5-83F6-558A-2C7C-8E4018BE210D}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Aplication.h" />
@@ -57,12 +63,23 @@
     <ClInclude Include="Source\Models\ModelBuilder.h">
       <Filter>Models</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Models\ModelComponents.h">
+      <Filter>Models</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Models\ModelUtilities.h">
+      <Filter>Models</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Models\RenderSystem.h">
       <Filter>Models</Filter>
     </ClInclude>
     <ClInclude Include="Source\Pawn.h" />
     <ClInclude Include="Source\Shader.h" />
-    <ClInclude Include="Source\TickObject.h" />
+    <ClInclude Include="Source\Systems\ISystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\Tick\TickSystem.h">
+      <Filter>Systems\Tick</Filter>
+    </ClInclude>
     <ClInclude Include="Source\Types.h" />
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>
@@ -112,9 +129,14 @@
     <ClCompile Include="Source\Models\ModelUtilities.cpp">
       <Filter>Models</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Models\RenderSystem.cpp">
+      <Filter>Models</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Pawn.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
-    <ClCompile Include="Source\TickObject.cpp" />
+    <ClCompile Include="Source\Systems\Tick\TickSystem.cpp">
+      <Filter>Systems\Tick</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Window.cpp" />
   </ItemGroup>
 </Project>

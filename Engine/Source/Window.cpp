@@ -18,7 +18,7 @@ Window::Window(int Width, int Height, const char* Title, GLFWmonitor* Monitor, G
     this->Width = Width;
     this->Height = Height;
 
-    WindowController = std::shared_ptr<Controller>(new Controller());
+    //WindowController = std::shared_ptr<Controller>(new Controller());
 }
 
 void Window::ProcessKeyboard(int Key, int Scancode, int Action, int Mods) 

@@ -2,21 +2,23 @@
 #ifndef _PAWN_H_
 #define _PAWN_H_
 
-#include "TickObject.h"
+#include "Models/ModelComponents.h"
 
 #include <memory>
 #include <glm/glm.hpp>
 
 class Camera;
 class InputHandler;
+struct TickComponent;
+struct FObjectInitializer;
 
-class Pawn : TickObject
+class Pawn : public Entity
 {
 public:
     Pawn() = delete;
-    Pawn(glm::vec3 Location = glm::vec3(0.0f), glm::vec3 Velocity = glm::vec3(0.0f));
+    Pawn(FObjectInitializer const& Initializer);
 
-    virtual void Tick(float DeltaTime) override;
+    void Tick(float DeltaTime);
 
     inline void AddVelocity(glm::vec3 VelocityToAdd) { Velocity += VelocityToAdd; }
     inline void SetVelocity(glm::vec3 NewVelocity) { Velocity = NewVelocity; }
@@ -32,8 +34,11 @@ public:
 private:
     std::shared_ptr<Camera> AttachedCamera;
 
-    glm::vec3 Location;
-    glm::vec3 Velocity;
+    std::shared_ptr<TickComponent> PawnTickComponent;
+    std::shared_ptr<PositionComponent> PosComponent;
+
+    glm::vec3 Location = glm::vec3(0.0f);
+    glm::vec3 Velocity = glm::vec3(0.0f);
 };
 
 #endif

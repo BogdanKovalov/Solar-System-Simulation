@@ -13,6 +13,8 @@
 #include "Light/SpotLight.h"
 #include "Models/Model.h"
 #include "Models/ModelBuilder.h"
+#include "Models/RenderSystem.h"
+#include "Models/ModelComponents.h"
 
 #include <iostream>
 #include <unordered_set>
@@ -40,8 +42,20 @@ int main()
     std::shared_ptr<Shader> BackpackShader = std::shared_ptr<Shader>(new Shader("../Shaders/Backpack.vert", "../Shaders/Backpack.frag"));
 
     ModelBuilder Builder(BackpackShader);
-    auto Earth = Builder.ImportModel("../Models/Earth/Earth.obj");
-    Earth->SetLocation(glm::vec3(0.0f, -2.0f, 0.0f));
+
+    std::shared_ptr<World> MyWorld = API1->GetWorld();
+
+    EntityID ID = MyWorld->CreateEntity();
+    MyWorld->AddComponent<ModelComponent>(ID);
+    ModelComponent* Comp = MyWorld->GetComponent<ModelComponent>(ID);
+    auto TempComp = Builder.ImportModel("../Models/Earth/Earth.obj").get();
+    Comp->Meshes = TempComp->Meshes;
+
+    ID = MyWorld->CreateEntity();
+    MyWorld->AddComponent<ModelComponent>(ID);
+    Comp = MyWorld->GetComponent<ModelComponent>(ID);
+    Comp->Meshes = TempComp->Meshes;
+    Comp->PosComponent->Location = glm::vec3(1.0f);
 
     BackpackShader->SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
 
@@ -50,7 +64,7 @@ int main()
     BackpackShader->SetVec3("PointLight.Specular", Light.GetSpecularAspect());
     BackpackShader->SetFloat("PointLight.LinearCoef", Light.GetLinearCoef());
     BackpackShader->SetFloat("PointLight.QuadraticCoef", Light.GetQuadraticCoef());
-    Light.SetLocation(glm::vec3(0.0f, 0.0f, 1.0f));
+    Light.SetLocation(glm::vec3(2.0f, 0.0f, 0.0f));
     BackpackShader->SetVec3("PointLight.Location", Light.GetLocation());
 
     while (!glfwWindowShouldClose(MainWindow->GetGLWindow()))
@@ -60,14 +74,13 @@ int main()
 
         glfwPollEvents();
 
-        API1->Tick((float)DeltaTime);
-
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+        API1->Tick((float)DeltaTime);
+
         BackpackShader->SetMatrix4("ViewMatrix", glm::value_ptr(MainWindow->GetView()));
         BackpackShader->SetVec3("ViewPos", MainWindow->GetCameraLocation());
-        Earth->Draw();
 
         glfwSwapBuffers(MainWindow->GetGLWindow());
     }

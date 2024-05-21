@@ -3,6 +3,7 @@
 #include "Models/Mesh.h"
 #include "ModelUtilities.h"
 #include "MaterialBuilder.h"
+#include "Models/ModelComponents.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -14,7 +15,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-std::shared_ptr<Model> ModelBuilder::ImportModel(std::string PathToModel)
+std::shared_ptr<ModelComponent> ModelBuilder::ImportModel(std::string PathToModel)
 {
     auto FoundedModel = CreatedModels.find(PathToModel);
     if (FoundedModel != CreatedModels.end())
@@ -29,7 +30,7 @@ std::shared_ptr<Model> ModelBuilder::ImportModel(std::string PathToModel)
 
     assert(Scene || !(Scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || Scene->mRootNode && "ASSIMP::FAILED TO READ FILE");
 
-    CreatingModel = std::shared_ptr<Model>(new Model);
+    CreatingModel = std::shared_ptr<ModelComponent>(new ModelComponent);
 
     ProcessNode(Scene->mRootNode, Scene);
 
@@ -50,7 +51,7 @@ void ModelBuilder::ProcessNode(aiNode* Node, aiScene const* Scene)
         aiMesh* AssimpMesh = Scene->mMeshes[Node->mMeshes[i]];
         if (AssimpMesh)
         {
-            CreatingModel->AddMesh(CreateMesh(AssimpMesh, Scene));
+            CreatingModel->Meshes.push_back(CreateMesh(AssimpMesh, Scene));
             Vertices.clear();
             Indices.clear();
             Textures.clear();
@@ -63,12 +64,12 @@ void ModelBuilder::ProcessNode(aiNode* Node, aiScene const* Scene)
     }
 }
 
-std::shared_ptr<Mesh> ModelBuilder::CreateMesh(aiMesh* AssimpMesh, aiScene const* Scene)
+std::shared_ptr<MeshComponent> ModelBuilder::CreateMesh(aiMesh* AssimpMesh, aiScene const* Scene)
 {
     GetVertices(AssimpMesh);
     GetIndices(AssimpMesh);
     auto MeshMaterial = GetMaterial(AssimpMesh, Scene);
-    std::shared_ptr<Mesh> NewMesh(new Mesh());
+    std::shared_ptr<MeshComponent> NewMesh(new MeshComponent());
 
     GLuint VAO, VBO, EBO;
     glGenVertexArrays(1, &VAO);

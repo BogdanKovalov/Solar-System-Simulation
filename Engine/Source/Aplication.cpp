@@ -1,8 +1,11 @@
 #include "Aplication.h"
 #include "Window.h"
-#include "TickObject.h"
 #include "InputSystem/InputAction.h"
 #include "InputSystem/InputManager.h"
+#include "Controller.h"
+#include "Models/RenderSystem.h"
+#include "Systems/Tick/TickSystem.h"
+#include "Pawn.h"
 #include <iostream>
 
 #define GLEW_STATIC
@@ -40,6 +43,13 @@ Aplication::Aplication()
     Success = glewInit();
 
     glfwSetInputMode(MainWindow->GetGLWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    MyWorld = std::shared_ptr<World>(new World);
+    auto NewController = std::shared_ptr<Controller>(new Controller());
+    MainWindow->SetController(NewController);
+    Pawn* CreatedPawn = static_cast<Pawn*>(CreateEntity<Pawn>());
+    NewController->SetPawn(std::shared_ptr<Pawn>(CreatedPawn));
+    InitializeSystems();
 }
 
 void Aplication::CreateWindow(int Width, int Height, const char* Title, GLFWmonitor* Monitor, GLFWwindow* Share)
@@ -95,12 +105,22 @@ void Aplication::AddTickObject(TickObject* Object)
 
 void Aplication::Tick(float DeltaTime) 
 {
-    for (auto Object : TickObjects)
+    for (auto System : Systems)
     {
-        if (!Object)
+        if (System)
         {
-            continue;
+            System->Update(DeltaTime);
         }
-        Object->Tick(DeltaTime);
+    }
+}
+
+void Aplication::InitializeSystems() 
+{
+    Systems.push_back(std::shared_ptr<RenderSystem>(new RenderSystem));
+    Systems.push_back(std::shared_ptr<TickSystem>(new TickSystem));
+
+    for (auto System : Systems)
+    {
+        System->SetOwningWorld(MyWorld);
     }
 }

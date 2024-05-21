@@ -19,6 +19,7 @@ public:
 
     void ProcessKeyboard(int Key, int Scancode, int Action, int Mods);
     void ProcessMouseMotion(int XPos, int YPos);
+    inline void SetController(std::shared_ptr<Controller> NewController) { WindowController = NewController; }
 
     inline int GetWidth() const { return Width; }
     inline int GetHeight() const { return Height; }

@@ -15,6 +15,8 @@ class Model;
 class Mesh;
 class Material;
 class Shader;
+struct MeshComponent;
+struct ModelComponent;
 
 struct aiNode;
 struct aiScene;
@@ -27,22 +29,22 @@ class ModelBuilder
 public:
     ModelBuilder() = delete;
     ModelBuilder(std::shared_ptr<Shader> InDefaultShader) : DefaultShader(InDefaultShader){};
-    std::shared_ptr<Model> ImportModel(std::string PathToModel);
+    std::shared_ptr<ModelComponent> ImportModel(std::string PathToModel);
 
 private:
     std::string ImportingDirectory;
-    std::shared_ptr<Model> CreatingModel;
+    std::shared_ptr<ModelComponent> CreatingModel;
     std::shared_ptr<Shader> DefaultShader;
 
     std::vector<Vertex> Vertices;
     std::vector<GLuint> Indices;
     std::vector<Texture> Textures;
 
-    std::unordered_map<std::string, std::shared_ptr<Model>> CreatedModels;
+    std::unordered_map<std::string, std::shared_ptr<ModelComponent>> CreatedModels;
 
 private:
     void ProcessNode(aiNode* Node, aiScene const* Scene);
-    std::shared_ptr<Mesh> CreateMesh(aiMesh* AssimpMesh, aiScene const* Scene);
+    std::shared_ptr<MeshComponent> CreateMesh(aiMesh* AssimpMesh, aiScene const* Scene);
     
     void GetVertices(aiMesh* AssimpMesh);
     void GetIndices(aiMesh* AssimpMesh);

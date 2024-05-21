@@ -37,10 +37,10 @@ void Camera::Rotate(glm::vec2 YawAndPitch)
     UpVector = glm::cross(RightVector, ForwardVector);
 }
 
-void Camera::Tick(float DeltaTime)
-{
-    // AddOffset(Velocity * DeltaTime);
-}
+//void Camera::Tick(float DeltaTime)
+//{
+//    // AddOffset(Velocity * DeltaTime);
+//}
 
 glm::mat4 Camera::GetViewMatrix() const
 {
@@ -52,4 +52,9 @@ glm::mat4 Camera::GetViewMatrix() const
 
     glm::mat4 ViewMatrix = glm::transpose(VectorMatrix) * PositionMatrix;
     return ViewMatrix;
+}
+
+glm::vec3 Camera::GetLocation() const 
+{
+    return Location;
 }

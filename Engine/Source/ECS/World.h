@@ -13,6 +13,8 @@
 
 struct ArchetypeRecord;
 struct Archetype;
+struct FObjectInitializer;
+class World;
 
 typedef unsigned long long EntityID;
 typedef unsigned int EntityIndex;
@@ -35,18 +37,15 @@ public:
     virtual void DummyFunction(){};
 };
 
-struct PositionComponent : public Component
-{
-public:
-    int x;
-    int y;
-    int z;
-};
-
 class Entity
 {
-private:
+public:
+    Entity() = delete;
+    Entity(FObjectInitializer const& Initializer);
+
+protected:
     EntityID ID;
+    std::shared_ptr<World> OwningWorld;
     std::vector<ComponentID> Components;
 };
 
@@ -85,13 +84,13 @@ public:
     void DestroyEntity(EntityID ID);
 
     template <class ComponentType>
-    void AddComponent(EntityID Entity);
+    Component* AddComponent(EntityID Entity);
 
     template <class ComponentType>
     ComponentType* GetComponent(EntityID Entity);
 
     template <class ComponentType>
-    std::vector<ComponentType*>& GetAllComponents();
+    std::vector<ComponentType*> GetAllComponents();
 
     template <class ComponentType>
     bool HasComponent(EntityID Entity);
@@ -115,13 +114,14 @@ private:
 
     // This is template function, because Entity can be moved to another archetype, if new component added
     template <class ComponentType>
-    void MoveEntityToArchetype(EntityID ID, std::shared_ptr<Archetype> NewArcehtype);
+   Component* MoveEntityToArchetype(EntityID ID, std::shared_ptr<Archetype> NewArcehtype);
     std::vector<Component*> MoveComponentsToArcehtype(std::vector<Component*>& Components, std::shared_ptr<Archetype> DestinationArchetype);
 };
 
 template <class ComponentType>
-inline void World::AddComponent(EntityID Entity)
+inline Component* World::AddComponent(EntityID Entity)
 {
+    static_assert(std::is_base_of<Component, ComponentType>::value, "Components classes must be derived from component");
     if (EntityRecordMap.find(Entity) == EntityRecordMap.end())
     {
         EntityRecordMap.emplace(Entity, std::shared_ptr<Record>(new Record));
@@ -133,7 +133,7 @@ inline void World::AddComponent(EntityID Entity)
     ArchetypeType NewType = SourceArchetype->Type;
     if (std::find(NewType.begin(), NewType.end(), CompID) != NewType.end())
     {
-        return;
+        return nullptr;
     }
     NewType.push_back(CompID);
     if (ArchetypeTypeMap.find(NewType) == ArchetypeTypeMap.end())
@@ -147,7 +147,8 @@ inline void World::AddComponent(EntityID Entity)
         SourceArchetype->AddArchetypes.emplace(CompID, DestinationArchetype);
     }
 
-    MoveEntityToArchetype<ComponentType>(Entity, DestinationArchetype);
+    auto CreatedComponent = MoveEntityToArchetype<ComponentType>(Entity, DestinationArchetype);
+    return CreatedComponent;
 }
 
 template <class ComponentType>
@@ -164,14 +165,25 @@ inline ComponentType* World::GetComponent(EntityID Entity)
     }
 
     std::shared_ptr<ArchetypeRecord> FoundArchetypeRecord = Archetypes[FoundArchetype->ID];
-    return static_cast<ComponentType*>(FoundArchetype->Components[FoundRecord->Row][FoundArchetypeRecord->Column]);
+    return dynamic_cast<ComponentType*>(FoundArchetype->Components[FoundRecord->Row][FoundArchetypeRecord->Column]);
 }
 
 template <class ComponentType>
-inline std::vector<ComponentType*>& World::GetAllComponents()
+inline std::vector<ComponentType*> World::GetAllComponents()
 {
     ComponentID CompID = GetComponentID<ComponentType>();
     ArchetypeMap& Archetypes = ComponentArchetypesMap[CompID];
+
+    std::vector<ComponentType*> RequestedComponents;
+
+    for (auto EntityID : Entities)
+    {
+        if (HasComponent<ComponentType>(EntityID))
+        {
+            RequestedComponents.push_back(GetComponent<ComponentType>(EntityID));
+        }
+    }
+    return RequestedComponents;
 }
 
 template <class ComponentType>
@@ -192,7 +204,7 @@ inline ComponentID World::GetComponentID()
 }
 
 template <class ComponentType>
-inline void World::MoveEntityToArchetype(EntityID ID, std::shared_ptr<Archetype> NewArcehtype)
+inline Component* World::MoveEntityToArchetype(EntityID ID, std::shared_ptr<Archetype> NewArcehtype)
 {
     if (EntityRecordMap.find(ID) == EntityRecordMap.end())
     {
@@ -207,7 +219,8 @@ inline void World::MoveEntityToArchetype(EntityID ID, std::shared_ptr<Archetype>
     {
         NewColumn = MoveComponentsToArcehtype(SourceArchetype->Components[FoundRecord->Row], NewArcehtype);
     }
-    NewColumn.push_back(new ComponentType());
+    Component* NewComponent = new ComponentType();
+    NewColumn.push_back(NewComponent);
     NewArcehtype->Components.push_back(NewColumn);
     FoundRecord->RecordArchetype = NewArcehtype;
     FoundRecord->Row = NewArcehtype->Components.size() - 1;
@@ -219,6 +232,7 @@ inline void World::MoveEntityToArchetype(EntityID ID, std::shared_ptr<Archetype>
     }
     std::shared_ptr<ArchetypeRecord> Record = Archetypes[NewArcehtype->ID];
     Record->Column = NewColumn.size() - 1;
+    return NewComponent;
 }
 
 #endif  // !_WORLD_H_

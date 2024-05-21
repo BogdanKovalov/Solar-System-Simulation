@@ -21,6 +21,8 @@ public:
     glm::mat4 GetView() const;
     glm::vec3 GetCameraLocation() const;
 
+    inline void SetPawn(std::shared_ptr<Pawn> NewPawn) { ControlledPawn = NewPawn; }
+
     void Move(FInputValue const& InputValue);
     void Look(FInputValue const& InputValue);
 
