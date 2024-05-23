@@ -1,15 +1,15 @@
 #include "Camera.h"
-#include "Aplication.h"
+#include "Game.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
 Camera::Camera(glm::vec3 Location, glm::vec3 TargetView) : Velocity(0.0f)
 {
     this->Location = Location;
-    auto API = Aplication::GetAPI();
+    auto API = Game::GetAPI();
     if (API)
     {
-        glm::vec3 WorldUp = Aplication::GetAPI()->GetWorldUp();
+        glm::vec3 WorldUp = Game::GetAPI()->GetWorldUp();
         ForwardVector = glm::normalize(Location - TargetView);
         RightVector = glm::normalize(glm::cross(ForwardVector, WorldUp));
         UpVector = glm::cross(RightVector, ForwardVector);

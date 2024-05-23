@@ -5,6 +5,7 @@
 #include "ECS/World.h"
 #include "Models/ModelUtilities.h"
 #include "Models/Material.h"
+#include "Game.h"
 
 #include <glm/glm.hpp>
 
@@ -31,9 +32,29 @@ public:
 
 struct ModelComponent : public Component
 {
-    std::shared_ptr<PositionComponent> PosComponent = std::shared_ptr<PositionComponent>(new PositionComponent);
+    std::shared_ptr<PositionComponent> PosComponent = std::make_shared<PositionComponent>();
     std::vector<std::shared_ptr<MeshComponent>> Meshes;
 };
 
+struct CameraComponent : public Component
+{
+    CameraComponent() 
+    {
+        glm::vec3 TargetView(0.0f, 0.0f, -1.0f);
+        auto API = Game::GetAPI();
+        if (API)
+        {
+            glm::vec3 WorldUp = Game::GetAPI()->GetWorldUp();
+            ForwardVector = glm::normalize(PosComponent->Location - TargetView);
+            RightVector = glm::normalize(glm::cross(ForwardVector, WorldUp));
+            UpVector = glm::cross(RightVector, ForwardVector);
+        }
+    }
+
+    std::shared_ptr<PositionComponent> PosComponent = std::make_shared<PositionComponent>();
+    glm::vec3 ForwardVector;
+    glm::vec3 RightVector;
+    glm::vec3 UpVector;
+};
 
 #endif  // !_MODEL_COMPONENT_H_

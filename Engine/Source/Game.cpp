@@ -1,10 +1,11 @@
-#include "Aplication.h"
+#include "Game.h"
 #include "Window.h"
 #include "InputSystem/InputAction.h"
 #include "InputSystem/InputManager.h"
 #include "Controller.h"
 #include "Models/RenderSystem.h"
 #include "Systems/Tick/TickSystem.h"
+#include "Systems/SystemManager.h"
 #include "Pawn.h"
 #include <iostream>
 
@@ -12,17 +13,17 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-std::shared_ptr<Aplication> Aplication::API;
+std::shared_ptr<Game> Game::API;
 
-std::shared_ptr<Aplication> Aplication::GetAPI()
+std::shared_ptr<Game> Game::GetAPI()
 {
     return API;
 }
 
-Aplication::Aplication()
+Game::Game()
 {
-    API = std::shared_ptr<Aplication>(this);
-    MainInputManager = std::shared_ptr<InputManager>(new InputManager());
+    API = std::shared_ptr<Game>(this);
+    MainInputManager = std::make_shared<InputManager>();
     WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
     int Success = glfwInit();
@@ -44,24 +45,27 @@ Aplication::Aplication()
 
     glfwSetInputMode(MainWindow->GetGLWindow(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
-    MyWorld = std::shared_ptr<World>(new World);
-    auto NewController = std::shared_ptr<Controller>(new Controller());
+    MyWorld = std::make_shared<World>();
+    auto NewController = std::make_shared<Controller>();
     MainWindow->SetController(NewController);
     Pawn* CreatedPawn = static_cast<Pawn*>(CreateEntity<Pawn>());
     NewController->SetPawn(std::shared_ptr<Pawn>(CreatedPawn));
-    InitializeSystems();
+    
+    FObjectInitializer SystemInitializer;
+    SystemInitializer.OwningWorld = MyWorld;
+    SystemsManager = std::make_shared<SystemManager>(SystemInitializer);
 }
 
-void Aplication::CreateWindow(int Width, int Height, const char* Title, GLFWmonitor* Monitor, GLFWwindow* Share)
+void Game::CreateWindow(int Width, int Height, const char* Title, GLFWmonitor* Monitor, GLFWwindow* Share)
 {
-    MainWindow = std::shared_ptr<Window>(new Window(Width, Height, Title, Monitor, Share));
+    MainWindow = std::make_shared<Window>(Width, Height, Title, Monitor, Share);
     
     glfwMakeContextCurrent(MainWindow->GetGLWindow());
     glfwSetKeyCallback(MainWindow->GetGLWindow(), GLProcessKeyboard);
     glfwSetCursorPosCallback(MainWindow->GetGLWindow(), GLProcessMouseMotion);
 }
 
-void Aplication::GLProcessKeyboard(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods)
+void Game::GLProcessKeyboard(GLFWwindow* Window, int Key, int Scancode, int Action, int Mods)
 {
     if (!API)
     {
@@ -70,7 +74,7 @@ void Aplication::GLProcessKeyboard(GLFWwindow* Window, int Key, int Scancode, in
     API->ProcessKeyboard(Key, Scancode, Action, Mods);
 }
 
-void Aplication::GLProcessMouseMotion(GLFWwindow* Window, double XPos, double YPos)
+void Game::GLProcessMouseMotion(GLFWwindow* Window, double XPos, double YPos)
 {
     if (!API)
     {
@@ -79,7 +83,7 @@ void Aplication::GLProcessMouseMotion(GLFWwindow* Window, double XPos, double YP
     API->ProcessMouseMotion(XPos, YPos);
 }
 
-void Aplication::ProcessKeyboard(int Key, int Scancode, int Action, int Mods)
+void Game::ProcessKeyboard(int Key, int Scancode, int Action, int Mods)
 {
     if (!MainInputManager)
     {
@@ -88,7 +92,7 @@ void Aplication::ProcessKeyboard(int Key, int Scancode, int Action, int Mods)
     MainInputManager->ProcessKeyboard(Key, Scancode, Action, Mods);
 }
 
-void Aplication::ProcessMouseMotion(double XPos, double YPos) 
+void Game::ProcessMouseMotion(double XPos, double YPos) 
 {
     if (!MainInputManager)
     {
@@ -97,30 +101,8 @@ void Aplication::ProcessMouseMotion(double XPos, double YPos)
     MainInputManager->ProcessMouseMotion(XPos, YPos);
 }
 
-void Aplication::AddTickObject(TickObject* Object) 
+
+void Game::Tick(float DeltaTime) 
 {
-    TickObjects.push_back(Object);
-}
-
-
-void Aplication::Tick(float DeltaTime) 
-{
-    for (auto System : Systems)
-    {
-        if (System)
-        {
-            System->Update(DeltaTime);
-        }
-    }
-}
-
-void Aplication::InitializeSystems() 
-{
-    Systems.push_back(std::shared_ptr<RenderSystem>(new RenderSystem));
-    Systems.push_back(std::shared_ptr<TickSystem>(new TickSystem));
-
-    for (auto System : Systems)
-    {
-        System->SetOwningWorld(MyWorld);
-    }
+    SystemsManager->Update(DeltaTime);
 }

@@ -8,21 +8,24 @@
 #include "InputSystem/InputHandler.h"
 #include "Controller.h"
 #include "Window.h"
-#include "Aplication.h"
+#include "Game.h"
 #include "Light/PointLight.h"
 #include "Light/SpotLight.h"
 #include "Models/Model.h"
 #include "Models/ModelBuilder.h"
 #include "Models/RenderSystem.h"
 #include "Models/ModelComponents.h"
+#include "ShaderManager.h"
 
 #include <iostream>
 #include <unordered_set>
 
 int main()
 {
-    Aplication* API1 = new Aplication;
-    auto MainWindow = API1->GetWindow();
+    Game* SolarSystemSimulation = new Game;
+    auto MainWindow = SolarSystemSimulation->GetWindow();
+
+    ShaderManager Manager;
 
     int Width = MainWindow->GetWidth();
     int Height = MainWindow->GetHeight();
@@ -39,11 +42,11 @@ int main()
     double DeltaTime = 0.0;
     double LastTime = glfwGetTime();
 
-    std::shared_ptr<Shader> BackpackShader = std::shared_ptr<Shader>(new Shader("../Shaders/Backpack.vert", "../Shaders/Backpack.frag"));
+    std::shared_ptr<Shader> BackpackShader = std::make_shared<Shader>("../Shaders/Backpack.vert", "../Shaders/Backpack.frag");
 
     ModelBuilder Builder(BackpackShader);
 
-    std::shared_ptr<World> MyWorld = API1->GetWorld();
+    std::shared_ptr<World> MyWorld = SolarSystemSimulation->GetWorld();
 
     EntityID ID = MyWorld->CreateEntity();
     MyWorld->AddComponent<ModelComponent>(ID);
@@ -77,7 +80,7 @@ int main()
         glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        API1->Tick((float)DeltaTime);
+        SolarSystemSimulation->Tick((float)DeltaTime);
 
         BackpackShader->SetMatrix4("ViewMatrix", glm::value_ptr(MainWindow->GetView()));
         BackpackShader->SetVec3("ViewPos", MainWindow->GetCameraLocation());

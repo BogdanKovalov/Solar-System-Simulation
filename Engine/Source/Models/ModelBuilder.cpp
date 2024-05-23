@@ -26,11 +26,11 @@ std::shared_ptr<ModelComponent> ModelBuilder::ImportModel(std::string PathToMode
     ImportingDirectory = PathToModel.substr(0, PathToModel.find_last_of("/") + 1);
 
     Assimp::Importer AssimpImporter;
-    aiScene const* Scene = AssimpImporter.ReadFile(PathToModel, aiProcess_Triangulate | aiProcess_FlipUVs);
+    aiScene const* Scene = AssimpImporter.ReadFile(PathToModel, aiProcess_Triangulate | aiProcess_FlipUVs | aiProcess_GenNormals);
 
     assert(Scene || !(Scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE) || Scene->mRootNode && "ASSIMP::FAILED TO READ FILE");
 
-    CreatingModel = std::shared_ptr<ModelComponent>(new ModelComponent);
+    CreatingModel = std::make_shared<ModelComponent>();
 
     ProcessNode(Scene->mRootNode, Scene);
 
@@ -69,7 +69,7 @@ std::shared_ptr<MeshComponent> ModelBuilder::CreateMesh(aiMesh* AssimpMesh, aiSc
     GetVertices(AssimpMesh);
     GetIndices(AssimpMesh);
     auto MeshMaterial = GetMaterial(AssimpMesh, Scene);
-    std::shared_ptr<MeshComponent> NewMesh(new MeshComponent());
+    std::shared_ptr<MeshComponent> NewMesh = std::make_shared<MeshComponent>();
 
     GLuint VAO, VBO, EBO;
     glGenVertexArrays(1, &VAO);

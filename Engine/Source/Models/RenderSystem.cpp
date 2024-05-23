@@ -16,6 +16,24 @@ void RenderSystem::Update(float DeltaTime)
     {
         return;
     }
+    
+    auto CameraComponents = OwningWorld->GetAllComponents<CameraComponent>();
+    CameraComponent* MainCamera = CameraComponents[0];
+    if (!MainCamera)
+    {
+        return;
+    }
+
+    glm::mat4 VectorMatrix = glm::mat4(
+        glm::vec4(MainCamera->RightVector, 0.0f), glm::vec4(MainCamera->UpVector, 0.0f), glm::vec4(MainCamera->ForwardVector, 0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+
+    glm::mat4 PositionMatrix(1.0f);
+    PositionMatrix = glm::translate(PositionMatrix, -MainCamera->PosComponent->Location);
+
+    glm::mat4 ViewMatrix = glm::transpose(VectorMatrix) * PositionMatrix;
+
+
+
 
     auto ModelComponents = OwningWorld->GetAllComponents<ModelComponent>();
 

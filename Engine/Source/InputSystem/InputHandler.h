@@ -35,7 +35,7 @@ inline void InputHandler::Bind(std::shared_ptr<InputAction> Action, Function&& F
     {
         return;
     }
-    //Action->SetInputHandler(std::shared_ptr<InputHandler>(this));
+
     auto Functor = std::bind(std::forward<Function>(FunctionToCall), std::forward<Args>(Arguements)...);
     KeyFunctionMap.emplace(Action.get(), Functor);
 }

@@ -2,6 +2,7 @@
 #ifndef _PAWN_H_
 #define _PAWN_H_
 
+#include "ECS/Entity.h"
 #include "Models/ModelComponents.h"
 
 #include <memory>
@@ -18,8 +19,6 @@ public:
     Pawn() = delete;
     Pawn(FObjectInitializer const& Initializer);
 
-    void Tick(float DeltaTime);
-
     inline void AddVelocity(glm::vec3 VelocityToAdd) { Velocity += VelocityToAdd; }
     inline void SetVelocity(glm::vec3 NewVelocity) { Velocity = NewVelocity; }
     inline void AddOffset(glm::vec3 Offset);
@@ -34,8 +33,12 @@ public:
 private:
     std::shared_ptr<Camera> AttachedCamera;
 
+    
+    void Tick(float DeltaTime);
+
     std::shared_ptr<TickComponent> PawnTickComponent;
     std::shared_ptr<PositionComponent> PosComponent;
+    std::shared_ptr<CameraComponent> PawnCameraComponent;
 
     glm::vec3 Location = glm::vec3(0.0f);
     glm::vec3 Velocity = glm::vec3(0.0f);

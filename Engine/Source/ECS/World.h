@@ -37,18 +37,6 @@ public:
     virtual void DummyFunction(){};
 };
 
-class Entity
-{
-public:
-    Entity() = delete;
-    Entity(FObjectInitializer const& Initializer);
-
-protected:
-    EntityID ID;
-    std::shared_ptr<World> OwningWorld;
-    std::vector<ComponentID> Components;
-};
-
 struct Archetype
 {
     Archetype()
@@ -138,7 +126,7 @@ inline Component* World::AddComponent(EntityID Entity)
     NewType.push_back(CompID);
     if (ArchetypeTypeMap.find(NewType) == ArchetypeTypeMap.end())
     {
-        ArchetypeTypeMap.emplace(NewType, std::shared_ptr<Archetype>(new Archetype));
+        ArchetypeTypeMap.emplace(NewType, std::make_shared<Archetype>());
     }
     std::shared_ptr<Archetype> DestinationArchetype = ArchetypeTypeMap[NewType];
 
@@ -228,7 +216,7 @@ inline Component* World::MoveEntityToArchetype(EntityID ID, std::shared_ptr<Arch
     ArchetypeMap& Archetypes = ComponentArchetypesMap[CompID];
     if (Archetypes.find(NewArcehtype->ID) == Archetypes.end())
     {
-        Archetypes.emplace(NewArcehtype->ID, std::shared_ptr<ArchetypeRecord>(new ArchetypeRecord));
+        Archetypes.emplace(NewArcehtype->ID, std::make_shared<ArchetypeRecord>());
     }
     std::shared_ptr<ArchetypeRecord> Record = Archetypes[NewArcehtype->ID];
     Record->Column = NewColumn.size() - 1;

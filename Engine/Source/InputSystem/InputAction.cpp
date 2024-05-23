@@ -1,10 +1,10 @@
 #include "InputAction.h"
 #include "InputManager.h"
-#include "../Aplication.h"
+#include "../Game.h"
 
 InputAction::InputAction() 
 {
-    auto API = Aplication::GetAPI();
+    auto API = Game::GetAPI();
     if (API)
     {
         if (auto MainInputManager = API->GetInputManger())

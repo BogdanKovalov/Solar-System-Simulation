@@ -1,17 +1,17 @@
 #include "Controller.h"
 #include "InputSystem/InputHandler.h"
 #include "InputSystem/InputAction.h"
-#include "Aplication.h"
+#include "Game.h"
 #include "Pawn.h"
 
 #include <iostream>
 
 Controller::Controller()
 {
-    InputComponent = std::shared_ptr<InputHandler>(new InputHandler());
+    InputComponent = std::make_shared<InputHandler>();
     //ControlledPawn = std::shared_ptr<Pawn>(new Pawn(glm::vec3(0.0f, 0.0f, -3.0f)));
-    MoveAction = std::shared_ptr<InputAction>(new InputAction());
-    LookAction = std::shared_ptr<InputAction>(new InputAction());
+    MoveAction = std::make_shared<InputAction>();
+    LookAction = std::make_shared<InputAction>();
     SetupInput();
 }
 

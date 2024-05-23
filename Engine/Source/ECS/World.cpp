@@ -1,5 +1,5 @@
 #include "World.h"
-#include "Aplication.h"
+#include "Game.h"
 
 Entity::Entity(FObjectInitializer const& Initializer) 
 {
@@ -39,7 +39,7 @@ std::vector<Component*> World::MoveComponentsToArcehtype(
         ArchetypeMap& Archetypes = ComponentArchetypesMap[typeid(*NewColumn[i]).hash_code()];
         if (Archetypes.find(DestinationArchetype->ID) == Archetypes.end())
         {
-            Archetypes.emplace(DestinationArchetype->ID, std::shared_ptr<ArchetypeRecord>(new ArchetypeRecord));
+            Archetypes.emplace(DestinationArchetype->ID, std::make_shared<ArchetypeRecord>());
         }
         std::shared_ptr<ArchetypeRecord> Record = Archetypes[DestinationArchetype->ID];
         Record->Column = i;

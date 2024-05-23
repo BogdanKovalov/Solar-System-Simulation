@@ -21,12 +21,15 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Aplication.h" />
     <ClInclude Include="Source\Camera.h" />
     <ClInclude Include="Source\Controller.h" />
+    <ClInclude Include="Source\ECS\Entity.h">
+      <Filter>ECS</Filter>
+    </ClInclude>
     <ClInclude Include="Source\ECS\World.h">
       <Filter>ECS</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Game.h" />
     <ClInclude Include="Source\InputSystem\InputAction.h">
       <Filter>InputSystem</Filter>
     </ClInclude>
@@ -74,7 +77,11 @@
     </ClInclude>
     <ClInclude Include="Source\Pawn.h" />
     <ClInclude Include="Source\Shader.h" />
+    <ClInclude Include="Source\ShaderManager.h" />
     <ClInclude Include="Source\Systems\ISystem.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Systems\SystemManager.h">
       <Filter>Systems</Filter>
     </ClInclude>
     <ClInclude Include="Source\Systems\Tick\TickSystem.h">
@@ -84,12 +91,15 @@
     <ClInclude Include="Source\Window.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Source\Aplication.cpp" />
     <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Controller.cpp" />
+    <ClCompile Include="Source\ECS\Entity.cpp">
+      <Filter>ECS</Filter>
+    </ClCompile>
     <ClCompile Include="Source\ECS\World.cpp">
       <Filter>ECS</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\InputSystem\InputAction.cpp">
       <Filter>InputSystem</Filter>
     </ClCompile>
@@ -134,6 +144,10 @@
     </ClCompile>
     <ClCompile Include="Source\Pawn.cpp" />
     <ClCompile Include="Source\Shader.cpp" />
+    <ClCompile Include="Source\ShaderManager.cpp" />
+    <ClCompile Include="Source\Systems\SystemManager.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
     <ClCompile Include="Source\Systems\Tick\TickSystem.cpp">
       <Filter>Systems\Tick</Filter>
     </ClCompile>
