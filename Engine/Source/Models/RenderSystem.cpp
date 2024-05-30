@@ -1,6 +1,7 @@
 #include "RenderSystem.h"
 #include "Models/ModelComponents.h"
 #include "Shader.h"
+#include "ShaderManager.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -23,6 +24,16 @@ void RenderSystem::Update(float DeltaTime)
     {
         return;
     }
+    auto Shaders = OwningWorld->GetAllComponents<Shader>();
+
+    glm::mat4 ProjectionMatrix(1.0f);
+    ProjectionMatrix = glm::perspective(glm::radians(MainCamera->FieldOfView),1080.0f / 1920.0f, MainCamera->NearPlaneDistance, MainCamera->FarPlaneDistance);
+    for (auto Shader : Shaders)
+    {
+        Shader->SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
+    }
+
+    std::cout << "Num of found shaders:" << Shaders.size() << "\n";
 
     glm::mat4 VectorMatrix = glm::mat4(
         glm::vec4(MainCamera->RightVector, 0.0f), glm::vec4(MainCamera->UpVector, 0.0f), glm::vec4(MainCamera->ForwardVector, 0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));

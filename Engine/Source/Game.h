@@ -13,6 +13,7 @@ class Window;
 class TickObject;
 class InputManager;
 class SystemManager;
+class ShaderManager;
 struct GLFWwindow;
 struct GLFWmonitor;
 
@@ -56,6 +57,7 @@ private:
     std::shared_ptr<Window> MainWindow;
     std::shared_ptr<World> MyWorld;
     std::shared_ptr<SystemManager> SystemsManager;
+    std::shared_ptr<ShaderManager> ShadersManager;
 
     glm::vec3 WorldUp;
 

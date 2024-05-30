@@ -3,15 +3,17 @@
 #define _SHADER_H_
 
 #include <glm/gtc/matrix_transform.hpp>
+#include <ECS/World.h>
 
 typedef unsigned int GLuint;
 typedef char GLchar;
 typedef float GLfloat;
 typedef int GLint;
 
-class Shader
+class Shader : public Component
 {
 public:
+    Shader(){};
     Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
 
     void SetMatrix4(const GLchar* Name, const GLfloat* Matrix);
@@ -23,6 +25,8 @@ public:
     void SetBool(const GLchar* Name, const bool Bool);
 
     void Use();
+
+    void SetProgram(GLuint NewProgram) { Program = NewProgram; }
 
 private:
     GLuint Program;

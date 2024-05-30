@@ -3,6 +3,7 @@
 #include "Systems/ISystem.h"
 #include "Models/RenderSystem.h"
 #include "Systems/Tick/TickSystem.h"
+#include "ShaderManager.h"
 #include "Game.h"
 
 SystemManager::SystemManager(FObjectInitializer const& Initializer)

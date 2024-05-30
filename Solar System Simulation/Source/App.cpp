@@ -25,8 +25,6 @@ int main()
     Game* SolarSystemSimulation = new Game;
     auto MainWindow = SolarSystemSimulation->GetWindow();
 
-    ShaderManager Manager;
-
     int Width = MainWindow->GetWidth();
     int Height = MainWindow->GetHeight();
     glm::mat4 ProjectionMatrix(1.0f);

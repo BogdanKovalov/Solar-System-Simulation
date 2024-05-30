@@ -6,6 +6,7 @@
 #include "Models/RenderSystem.h"
 #include "Systems/Tick/TickSystem.h"
 #include "Systems/SystemManager.h"
+#include "ShaderManager.h"
 #include "Pawn.h"
 #include <iostream>
 
@@ -54,6 +55,9 @@ Game::Game()
     FObjectInitializer SystemInitializer;
     SystemInitializer.OwningWorld = MyWorld;
     SystemsManager = std::make_shared<SystemManager>(SystemInitializer);
+    
+    ShadersManager = std::shared_ptr<ShaderManager>(static_cast<ShaderManager*>(CreateEntity<ShaderManager>()));
+ 
 }
 
 void Game::CreateWindow(int Width, int Height, const char* Title, GLFWmonitor* Monitor, GLFWwindow* Share)
