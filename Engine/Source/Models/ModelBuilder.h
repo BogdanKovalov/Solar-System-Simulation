@@ -27,14 +27,12 @@ typedef unsigned int GLuint;
 class ModelBuilder
 {
 public:
-    ModelBuilder() = delete;
-    ModelBuilder(std::shared_ptr<Shader> InDefaultShader) : DefaultShader(InDefaultShader){};
+    ModelBuilder(){};
     std::shared_ptr<ModelComponent> ImportModel(std::string PathToModel);
 
 private:
     std::string ImportingDirectory;
     std::shared_ptr<ModelComponent> CreatingModel;
-    std::shared_ptr<Shader> DefaultShader;
 
     std::vector<Vertex> Vertices;
     std::vector<GLuint> Indices;

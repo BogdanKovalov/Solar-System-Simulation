@@ -7,17 +7,17 @@
 
 typedef unsigned int GLuint;
 
-void Material::LoadTexturesToShader() 
+void Material::LoadPropertiesToShader(Shader const* LoadShader) const
 {
-    if (!UsingShader)
+    if (!LoadShader)
     {
         return;
     }
 
-    UsingShader->SetVec4("MeshMaterial.Ambient", AmbientColor);
-    UsingShader->SetVec4("MeshMaterial.Diffuse", DiffuseColor);
-    UsingShader->SetVec4("MeshMaterial.Specular", SpecularColor);
-    UsingShader->SetFloat("MeshMaterial.Shininess", Shininess);
+    LoadShader->SetVec4("MeshMaterial.Ambient", AmbientColor);
+    LoadShader->SetVec4("MeshMaterial.Diffuse", DiffuseColor);
+    LoadShader->SetVec4("MeshMaterial.Specular", SpecularColor);
+    LoadShader->SetFloat("MeshMaterial.Shininess", Shininess);
 
     GLuint NumLoadedTextures = 0;
 
@@ -28,11 +28,11 @@ void Material::LoadTexturesToShader()
         {
             if (TextureType == ETextureType::NORMAL)
             {
-                UsingShader->SetBool("MeshMaterial.HasNormalMap", true);
+                LoadShader->SetBool("MeshMaterial.HasNormalMap", true);
             }
             glActiveTexture(GL_TEXTURE0 + NumLoadedTextures);
             std::string TextureName = ModelUtilities::TypeToString(TextureType);
-            UsingShader->SetInt(("MeshMaterial." + TextureName + std::to_string(i)).c_str(), NumLoadedTextures++);
+            LoadShader->SetInt(("MeshMaterial." + TextureName + std::to_string(i)).c_str(), NumLoadedTextures++);
             glBindTexture(GL_TEXTURE_2D, Textures->second.ID);
             ++Textures;
         }

@@ -10,25 +10,35 @@ typedef char GLchar;
 typedef float GLfloat;
 typedef int GLint;
 
+enum EShaderType
+{
+    BASIC,
+    NORMALMAP
+};
+
 class Shader : public Component
 {
 public:
     Shader(){};
     Shader(const GLchar* vertexPath, const GLchar* fragmentPath);
 
-    void SetMatrix4(const GLchar* Name, const GLfloat* Matrix);
-    void SetMatrix3(const GLchar* Name, const GLfloat* Matrix);
-    void SetVec3(const GLchar* Name, glm::vec3 Vec);
-    void SetVec4(const GLchar* Name, glm::vec4 Vec);
-    void SetInt(const GLchar* Name, const GLint Int);
-    void SetFloat(const GLchar* Name, const GLfloat Float);
-    void SetBool(const GLchar* Name, const bool Bool);
+    void SetMatrix4(const GLchar* Name, const GLfloat* Matrix) const;
+    void SetMatrix3(const GLchar* Name, const GLfloat* Matrix) const;
+    void SetVec3(const GLchar* Name, glm::vec3 Vec) const;
+    void SetVec4(const GLchar* Name, glm::vec4 Vec) const;
+    void SetInt(const GLchar* Name, const GLint Int) const;
+    void SetFloat(const GLchar* Name, const GLfloat Float) const;
+    void SetBool(const GLchar* Name, const bool Bool) const;
 
-    void Use();
+    inline void SetProgram(GLuint NewProgram) { Program = NewProgram; }
+    inline void SetShaderType(EShaderType NewType) { Type = NewType; }
 
-    void SetProgram(GLuint NewProgram) { Program = NewProgram; }
+    inline EShaderType GetType() const { return Type; }
+
+    void Use() const;
 
 private:
+    EShaderType Type;
     GLuint Program;
 };
 

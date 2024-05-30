@@ -56,7 +56,7 @@ struct CameraComponent : public Component
     glm::vec3 RightVector;
     glm::vec3 UpVector;
 
-    float NearPlaneDistance = 0.01f;
+    float NearPlaneDistance = 0.1f;
     float FarPlaneDistance = 100.0f;
     float FieldOfView = 45.0f;
 };

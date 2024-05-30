@@ -51,19 +51,18 @@ Game::Game()
     MainWindow->SetController(NewController);
     Pawn* CreatedPawn = static_cast<Pawn*>(CreateEntity<Pawn>());
     NewController->SetPawn(std::shared_ptr<Pawn>(CreatedPawn));
-    
+
     FObjectInitializer SystemInitializer;
     SystemInitializer.OwningWorld = MyWorld;
     SystemsManager = std::make_shared<SystemManager>(SystemInitializer);
-    
+
     ShadersManager = std::shared_ptr<ShaderManager>(static_cast<ShaderManager*>(CreateEntity<ShaderManager>()));
- 
 }
 
 void Game::CreateWindow(int Width, int Height, const char* Title, GLFWmonitor* Monitor, GLFWwindow* Share)
 {
     MainWindow = std::make_shared<Window>(Width, Height, Title, Monitor, Share);
-    
+
     glfwMakeContextCurrent(MainWindow->GetGLWindow());
     glfwSetKeyCallback(MainWindow->GetGLWindow(), GLProcessKeyboard);
     glfwSetCursorPosCallback(MainWindow->GetGLWindow(), GLProcessMouseMotion);
@@ -96,7 +95,7 @@ void Game::ProcessKeyboard(int Key, int Scancode, int Action, int Mods)
     MainInputManager->ProcessKeyboard(Key, Scancode, Action, Mods);
 }
 
-void Game::ProcessMouseMotion(double XPos, double YPos) 
+void Game::ProcessMouseMotion(double XPos, double YPos)
 {
     if (!MainInputManager)
     {
@@ -105,8 +104,10 @@ void Game::ProcessMouseMotion(double XPos, double YPos)
     MainInputManager->ProcessMouseMotion(XPos, YPos);
 }
 
-
-void Game::Tick(float DeltaTime) 
+void Game::Tick(float DeltaTime)
 {
-    SystemsManager->Update(DeltaTime);
+    if (SystemsManager)
+    {
+        SystemsManager->Update(DeltaTime);
+    }
 }

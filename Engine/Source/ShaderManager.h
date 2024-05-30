@@ -10,10 +10,11 @@
 
 class Shader;
 struct FObjectInitializer;
+enum EShaderType;
 typedef unsigned int GLuint;
 typedef unsigned int GLenum;
 
-enum class EShaderType
+enum class EShaderFileType
 {
     NONE,
     VERTEX,
@@ -22,17 +23,18 @@ enum class EShaderType
 
 struct FShaderPathType
 {
-    FShaderPathType() : Type(EShaderType::NONE), FilePath(std::filesystem::path()){};
-    FShaderPathType(EShaderType InType, std::filesystem::path InFilePath) : Type(InType), FilePath(InFilePath){};
-    EShaderType Type;
+    FShaderPathType() : Type(EShaderFileType::NONE), FilePath(std::filesystem::path()){};
+    FShaderPathType(EShaderFileType InType, std::filesystem::path InFilePath) : Type(InType), FilePath(InFilePath){};
+    EShaderFileType Type;
     std::filesystem::path FilePath;
 };
 
 namespace ShaderUtilities
 {
 
-EShaderType GetShaderType(std::string const& ShaderFile);
-unsigned int ConvertToGLType(EShaderType Type);
+EShaderFileType GetShaderFileType(std::string const& ShaderFile);
+EShaderType GetShaderType(std::string const& FileName);
+unsigned int ConvertToGLType(EShaderFileType Type);
 std::string GetFileName(std::filesystem::path const& FilePath);
 
 std::string const ShaderPath = "../Shaders";

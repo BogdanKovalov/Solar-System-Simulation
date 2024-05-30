@@ -151,6 +151,6 @@ std::shared_ptr<Material> ModelBuilder::GetMaterial(aiMesh* AssimpMesh, aiScene 
         return std::shared_ptr<Material>();
     }
 
-    MaterialBuilder MatBuilder(DefaultShader);
+    MaterialBuilder MatBuilder{};
     return MatBuilder.CreateMaterialFromAssimpMaterial(Scene->mMaterials[AssimpMesh->mMaterialIndex], ImportingDirectory);
 }

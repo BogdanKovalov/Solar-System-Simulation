@@ -81,50 +81,49 @@ Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath)
     glDeleteShader(fragment);
 }
 
-void Shader::SetMatrix4(const GLchar* Name, const GLfloat* Matrix) 
+void Shader::SetMatrix4(const GLchar* Name, const GLfloat* Matrix) const
 {
     Use();
     glUniformMatrix4fv(glGetUniformLocation(Program, Name), 1, GL_FALSE, Matrix);
 }
 
-void Shader::SetMatrix3(const GLchar* Name, const GLfloat* Matrix) 
+void Shader::SetMatrix3(const GLchar* Name, const GLfloat* Matrix) const
 {
     Use();
     glUniformMatrix3fv(glGetUniformLocation(Program, Name), 1, GL_FALSE, Matrix);
 }
 
-void Shader::SetVec3(const GLchar* Name, glm::vec3 Vec3) 
+void Shader::SetVec3(const GLchar* Name, glm::vec3 Vec3) const
 {
     Use();
     glUniform3f(glGetUniformLocation(Program, Name), Vec3.x, Vec3.y, Vec3.z);
 }
 
-void Shader::SetVec4(const GLchar* Name, glm::vec4 Vec) 
+void Shader::SetVec4(const GLchar* Name, glm::vec4 Vec) const
 {
     Use();
     glUniform4f(glGetUniformLocation(Program, Name), Vec.x, Vec.y, Vec.z, Vec.w);
 }
 
-void Shader::SetInt(const GLchar* Name, const GLint Int) 
+void Shader::SetInt(const GLchar* Name, const GLint Int) const
 {
     Use();
-    auto loc = glGetUniformLocation(Program, Name);
     glUniform1i(glGetUniformLocation(Program, Name), Int);
 }
 
-void Shader::SetFloat(const GLchar* Name, const GLfloat Float) 
+void Shader::SetFloat(const GLchar* Name, const GLfloat Float) const
 {
     Use();
     glUniform1f(glGetUniformLocation(Program, Name), Float);
 }
 
-void Shader::SetBool(const GLchar* Name, const bool Bool)
+void Shader::SetBool(const GLchar* Name, const bool Bool) const
 {
     Use();
     glUniform1i(glGetUniformLocation(Program, Name), Bool);
 }
 
-void Shader::Use()
+void Shader::Use() const
 {
     glUseProgram(Program);
 }

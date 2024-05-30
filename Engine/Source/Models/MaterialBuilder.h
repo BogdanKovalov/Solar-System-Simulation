@@ -13,13 +13,11 @@ struct Texture;
 class MaterialBuilder
 {
 public:
-    MaterialBuilder() = delete;
-    MaterialBuilder(std::shared_ptr<Shader> InDefaultShader) : DefaultShader(InDefaultShader){};
+    MaterialBuilder(){};
     std::shared_ptr<Material> CreateMaterialFromAssimpMaterial(aiMaterial* AssimpMaterial, std::string Directory);
 
 private:
     std::string ImportingDirectory;
-    std::shared_ptr<Shader> DefaultShader;
 
 private:
     void SetMaterialColors(aiMaterial* AssimpMaterial, std::shared_ptr<Material> CreatingMaterial);

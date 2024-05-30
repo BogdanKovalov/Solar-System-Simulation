@@ -14,7 +14,8 @@ ShaderManager::ShaderManager(FObjectInitializer const& Initializer) : Entity(Ini
 {
     for (const auto& Entry : std::filesystem::recursive_directory_iterator(ShaderUtilities::ShaderPath))
     {
-        auto FoundShaderProgram = NameProgramMap.find(ShaderUtilities::GetFileName(Entry.path()));
+        std::string FileName = ShaderUtilities::GetFileName(Entry.path());
+        auto FoundShaderProgram = NameProgramMap.find(FileName);
         if (FoundShaderProgram != NameProgramMap.end())
         {
             continue;
@@ -22,7 +23,7 @@ ShaderManager::ShaderManager(FObjectInitializer const& Initializer) : Entity(Ini
 
         FShaderPathType ShaderPathType;
         ShaderPathType.FilePath = Entry.path();
-        ShaderPathType.Type = ShaderUtilities::GetShaderType(Entry.path().string());
+        ShaderPathType.Type = ShaderUtilities::GetShaderFileType(FileName);
 
         std::vector<FShaderPathType> MatchingShaderFiles = FindMatchingShaderFiles(ShaderPathType);
         MatchingShaderFiles.push_back(ShaderPathType);
@@ -33,27 +34,28 @@ ShaderManager::ShaderManager(FObjectInitializer const& Initializer) : Entity(Ini
             CompiledShaders.push_back(CompileShader(Shader));
         }
         GLuint ProgramID = LinkShaders(CompiledShaders);
-        NameProgramMap.emplace(ShaderUtilities::GetFileName(Entry.path()), ProgramID);
+        NameProgramMap.emplace(FileName, ProgramID);
         Component* CreatedComp = OwningWorld->AddComponent<Shader>(ID);
         if (Shader* ShaderComp = dynamic_cast<Shader*>(CreatedComp))
         {
             ShaderComp->SetProgram(ProgramID);
+            ShaderComp->SetShaderType(ShaderUtilities::GetShaderType(FileName));
         }
     }
 }
 
-EShaderType ShaderUtilities::GetShaderType(std::string const& ShaderFile)
+EShaderFileType ShaderUtilities::GetShaderFileType(std::string const& ShaderFile)
 {
     std::string FileExtension = ShaderFile.substr(ShaderFile.find_last_of('.') + 1);
     if (FileExtension == VertexShaderExtension)
     {
-        return EShaderType::VERTEX;
+        return EShaderFileType::VERTEX;
     }
     if (FileExtension == FragmentShaderExtension)
     {
-        return EShaderType::FRAGMENT;
+        return EShaderFileType::FRAGMENT;
     }
-    return EShaderType();
+    return EShaderFileType();
 }
 
 std::vector<FShaderPathType> ShaderManager::FindMatchingShaderFiles(FShaderPathType const& ShaderPathType)
@@ -63,7 +65,7 @@ std::vector<FShaderPathType> ShaderManager::FindMatchingShaderFiles(FShaderPathT
     for (const auto& Entry : std::filesystem::recursive_directory_iterator(ShaderUtilities::ShaderPath))
     {
         std::string FoundName = ShaderUtilities::GetFileName(Entry.path());
-        EShaderType ShaderType = ShaderUtilities::GetShaderType(Entry.path().string());
+        EShaderFileType ShaderType = ShaderUtilities::GetShaderFileType(Entry.path().string());
         if (FoundName == FileName && ShaderType != ShaderPathType.Type)
         {
             MatchingShaders.push_back(FShaderPathType(ShaderType, Entry.path()));
@@ -75,16 +77,13 @@ std::vector<FShaderPathType> ShaderManager::FindMatchingShaderFiles(FShaderPathT
 GLuint ShaderManager::CompileShader(FShaderPathType const& ShaderPathType) const
 {
     std::stringstream ShaderCode;
-    try
-    {
-        std::ifstream ShaderFile(ShaderPathType.FilePath);
-        ShaderCode << ShaderFile.rdbuf();
-        ShaderFile.close();
+    std::ifstream ShaderFile(ShaderPathType.FilePath);
+    if (!ShaderFile)
+    { 
+        std::cerr << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ::" << ShaderPathType.FilePath << "\n";
     }
-    catch (std::ifstream::failure Exception)
-    {
-        std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ::" << Exception.what() << "\n";
-    }
+    ShaderCode << ShaderFile.rdbuf();
+    ShaderFile.close();
 
     GLuint ShaderID = glCreateShader(ShaderUtilities::ConvertToGLType(ShaderPathType.Type));
     std::string StringCode = ShaderCode.str();
@@ -98,7 +97,7 @@ GLuint ShaderManager::CompileShader(FShaderPathType const& ShaderPathType) const
     {
         GLchar InfoLog[512];
         glGetShaderInfoLog(ShaderID, 512, NULL, InfoLog);
-        std::cout << "ERROR::SHADER::COMPILATION_FAILED" << InfoLog << "\n";
+        std::cerr << "ERROR::SHADER::COMPILATION_FAILED" << InfoLog << "\n";
     }
     return ShaderID;
 }
@@ -111,13 +110,14 @@ GLuint ShaderManager::LinkShaders(std::vector<GLuint> ShadersToLink)
         glAttachShader(ProgramID, Shader);
     }
     glLinkProgram(ProgramID);
+
     GLint Success;
     glGetProgramiv(ProgramID, GL_LINK_STATUS, &Success);
     if (!Success)
     {
         GLchar InfoLog[512];
         glGetProgramInfoLog(ProgramID, 512, NULL, InfoLog);
-        std::cout << "ERROR::SHADER::PROGRAM::LINK FAILED" << InfoLog << "\n";
+        std::cerr << "ERROR::SHADER::PROGRAM::LINK FAILED" << InfoLog << "\n";
     }
     for (auto Shader : ShadersToLink)
     {
@@ -127,13 +127,13 @@ GLuint ShaderManager::LinkShaders(std::vector<GLuint> ShadersToLink)
     return ProgramID;
 }
 
-unsigned int ShaderUtilities::ConvertToGLType(EShaderType Type)
+unsigned int ShaderUtilities::ConvertToGLType(EShaderFileType Type)
 {
     switch (Type)
     {
-        case EShaderType::NONE: break;
-        case EShaderType::VERTEX: return GL_VERTEX_SHADER;
-        case EShaderType::FRAGMENT: return GL_FRAGMENT_SHADER;
+        case EShaderFileType::NONE: break;
+        case EShaderFileType::VERTEX: return GL_VERTEX_SHADER;
+        case EShaderFileType::FRAGMENT: return GL_FRAGMENT_SHADER;
         default: break;
     }
     return GLenum();
@@ -149,4 +149,17 @@ std::string ShaderUtilities::GetFileName(std::filesystem::path const& FilePath)
     }
     FileName.erase(DotPos);
     return FileName;
+}
+
+EShaderType ShaderUtilities::GetShaderType(std::string const& FileName)
+{
+    if (FileName == "Basic")
+    {
+        return EShaderType::BASIC;
+    }
+    if (FileName == "NormalMap")
+    {
+        return EShaderType::NORMALMAP;
+    }
+    return EShaderType();
 }

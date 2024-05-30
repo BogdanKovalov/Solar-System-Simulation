@@ -4,6 +4,7 @@
 
 #include <glm/glm.hpp>
 #include "ModelUtilities.h"
+#include "Shader.h"
 
 #include <unordered_map>
 #include <memory>
@@ -13,15 +14,15 @@ class Shader;
 class Material
 {
 public:
-    Material() = delete;
-    Material(std::shared_ptr<Shader> Shader) : UsingShader(Shader){};
+    Material(){};
+    //Material(std::shared_ptr<Shader> Shader) : UsingShader(Shader){};
 
-    void LoadTexturesToShader();
+    void LoadPropertiesToShader(Shader const* LoadShader) const;
 
     bool IsTextureLoaded(ETextureType Type, std::string LocalPath);
     void AddTexture(ETextureType NewType, Texture NewTexture) { TypeTextureMap.emplace(NewType, NewTexture); }
 
-    std::shared_ptr<Shader> GetShader() const { return UsingShader; }
+    EShaderType GetShaderType() const { return ShaderType; }
 
     void SetAmbientColor(glm::vec4 NewAmbientColor) { AmbientColor = NewAmbientColor; }
     void SetDiffuseColor(glm::vec4 NewDiffuseColor) { DiffuseColor = NewDiffuseColor; }
@@ -36,11 +37,11 @@ private:
 
     std::unordered_map<ETextureType, Texture> TypeTextureMap;
 
-    std::shared_ptr<Shader> UsingShader;
+    EShaderType ShaderType = EShaderType::BASIC; 
 
 private:
-    auto GetTextureByType(ETextureType Type) { return TypeTextureMap.find(Type); }
-    size_t GetNumTexturesByType(ETextureType Type) { return TypeTextureMap.count(Type); }
+    auto GetTextureByType(ETextureType Type) const { return TypeTextureMap.find(Type); }
+    size_t GetNumTexturesByType(ETextureType Type) const { return TypeTextureMap.count(Type); }
 };
 
 class TexturedMaterial : public Material

@@ -25,11 +25,6 @@ int main()
     Game* SolarSystemSimulation = new Game;
     auto MainWindow = SolarSystemSimulation->GetWindow();
 
-    int Width = MainWindow->GetWidth();
-    int Height = MainWindow->GetHeight();
-    glm::mat4 ProjectionMatrix(1.0f);
-    ProjectionMatrix = glm::perspective(glm::radians(45.0f), (float)Width / Height, 0.1f, 100.0f);
-
     PointLight Light(1000.0f, glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f));
     SpotLight SpotLight(glm::vec3(0.0f, 0.0f, -1.0f), 12.5f, 17.5f);
     SpotLight.SetLocation(glm::vec3(0.0f, 0.0f, 1.0f));
@@ -40,9 +35,7 @@ int main()
     double DeltaTime = 0.0;
     double LastTime = glfwGetTime();
 
-    std::shared_ptr<Shader> BackpackShader = std::make_shared<Shader>("../Shaders/Backpack.vert", "../Shaders/Backpack.frag");
-
-    ModelBuilder Builder(BackpackShader);
+    ModelBuilder Builder{};
 
     std::shared_ptr<World> MyWorld = SolarSystemSimulation->GetWorld();
 
@@ -51,22 +44,20 @@ int main()
     ModelComponent* Comp = MyWorld->GetComponent<ModelComponent>(ID);
     auto TempComp = Builder.ImportModel("../Models/Earth/Earth.obj").get();
     Comp->Meshes = TempComp->Meshes;
+    Comp->PosComponent->Location = glm::vec3(-1.0f);
 
     ID = MyWorld->CreateEntity();
     MyWorld->AddComponent<ModelComponent>(ID);
     Comp = MyWorld->GetComponent<ModelComponent>(ID);
     Comp->Meshes = TempComp->Meshes;
-    Comp->PosComponent->Location = glm::vec3(1.0f);
 
-    BackpackShader->SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
-
-    BackpackShader->SetVec3("PointLight.Ambient", Light.GetAmbientAspect());
-    BackpackShader->SetVec3("PointLight.Diffuse", Light.GetDiffuseAspect());
-    BackpackShader->SetVec3("PointLight.Specular", Light.GetSpecularAspect());
-    BackpackShader->SetFloat("PointLight.LinearCoef", Light.GetLinearCoef());
-    BackpackShader->SetFloat("PointLight.QuadraticCoef", Light.GetQuadraticCoef());
+    //BackpackShader->SetVec3("PointLight.Ambient", Light.GetAmbientAspect());
+    //BackpackShader->SetVec3("PointLight.Diffuse", Light.GetDiffuseAspect());
+    //BackpackShader->SetVec3("PointLight.Specular", Light.GetSpecularAspect());
+    //BackpackShader->SetFloat("PointLight.LinearCoef", Light.GetLinearCoef());
+    //BackpackShader->SetFloat("PointLight.QuadraticCoef", Light.GetQuadraticCoef());*/
     Light.SetLocation(glm::vec3(2.0f, 0.0f, 0.0f));
-    BackpackShader->SetVec3("PointLight.Location", Light.GetLocation());
+    //BackpackShader->SetVec3("PointLight.Location", Light.GetLocation());
 
     while (!glfwWindowShouldClose(MainWindow->GetGLWindow()))
     {
@@ -75,13 +66,10 @@ int main()
 
         glfwPollEvents();
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        SolarSystemSimulation->Tick((float)DeltaTime);
-
-        BackpackShader->SetMatrix4("ViewMatrix", glm::value_ptr(MainWindow->GetView()));
-        BackpackShader->SetVec3("ViewPos", MainWindow->GetCameraLocation());
+         SolarSystemSimulation->Tick((float)DeltaTime);
 
         glfwSwapBuffers(MainWindow->GetGLWindow());
     }

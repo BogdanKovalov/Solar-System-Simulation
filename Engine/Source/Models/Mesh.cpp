@@ -41,23 +41,23 @@ void Mesh::SetupMesh()
     glBindVertexArray(0);
 }
 
-void Mesh::Draw()
-{
-    if (!MeshMaterial)
-    {
-        return;
-    }
-    GLuint NumLoadedTextures = 0;
-
-    MeshMaterial->LoadTexturesToShader();
-    glBindVertexArray(VAO);
-    glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
-    glBindVertexArray(0);
-
-    glActiveTexture(GL_TEXTURE0);
-}
-
-std::shared_ptr<Shader> Mesh::GetMaterialShader() const
-{
-    return MeshMaterial->GetShader();
-}
+//void Mesh::Draw()
+//{
+//    if (!MeshMaterial)
+//    {
+//        return;
+//    }
+//    GLuint NumLoadedTextures = 0;
+//
+//    MeshMaterial->LoadTexturesToShader();
+//    glBindVertexArray(VAO);
+//    glDrawElements(GL_TRIANGLES, Indices.size(), GL_UNSIGNED_INT, 0);
+//    glBindVertexArray(0);
+//
+//    glActiveTexture(GL_TEXTURE0);
+//}
+//
+//std::shared_ptr<Shader> Mesh::GetMaterialShader() const
+//{
+//    return MeshMaterial->GetShader();
+//}

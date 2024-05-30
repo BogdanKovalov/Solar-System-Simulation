@@ -15,7 +15,7 @@
 
 std::shared_ptr<Material> MaterialBuilder::CreateMaterialFromAssimpMaterial(aiMaterial* AssimpMaterial, std::string Directory)
 {
-    std::shared_ptr<Material> CreatedMaterial(new Material(DefaultShader));
+    std::shared_ptr<Material> CreatedMaterial = std::make_shared<Material>();
 
     SetMaterialColors(AssimpMaterial, CreatedMaterial);
 
