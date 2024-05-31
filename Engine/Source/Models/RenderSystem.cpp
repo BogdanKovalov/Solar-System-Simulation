@@ -2,6 +2,7 @@
 #include "Models/ModelComponents.h"
 #include "Shader.h"
 #include "ShaderManager.h"
+#include "Light/PointLight.h"
 
 #define GLEW_STATIC
 #include <GL/glew.h>
@@ -13,6 +14,9 @@
 
 void RenderSystem::Update(float DeltaTime)
 {
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
     LoadCommonDataToShaders();
 
     auto ModelComponents = OwningWorld->GetAllComponents<ModelComponent>();
@@ -27,7 +31,7 @@ void RenderSystem::Update(float DeltaTime)
 
         if (!MaterialShader)
         {
-            continue;    
+            continue;
         }
 
         LoadPositionDataToShader(MaterialShader, ModelComponent->PosComponent);
@@ -47,6 +51,8 @@ void RenderSystem::LoadCommonDataToShaders() const
         return;
     }
 
+    auto PointLightComponents = OwningWorld->GetAllComponents<PointLight>();
+
     auto CameraComponents = OwningWorld->GetAllComponents<CameraComponent>();
     CameraComponent* MainCamera = CameraComponents[0];
     if (!MainCamera)
@@ -57,7 +63,7 @@ void RenderSystem::LoadCommonDataToShaders() const
 
     glm::mat4 ProjectionMatrix(1.0f);
     ProjectionMatrix = glm::perspective(
-        glm::radians(MainCamera->FieldOfView), 1080.0f / 1920.0f, MainCamera->NearPlaneDistance, MainCamera->FarPlaneDistance);
+        glm::radians(MainCamera->FieldOfView), 1920.0f / 1080.0f, MainCamera->NearPlaneDistance, MainCamera->FarPlaneDistance);
 
     glm::mat4 VectorMatrix = glm::mat4(glm::vec4(MainCamera->RightVector, 0.0f), glm::vec4(MainCamera->UpVector, 0.0f),
         glm::vec4(MainCamera->ForwardVector, 0.0f), glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -72,6 +78,12 @@ void RenderSystem::LoadCommonDataToShaders() const
         Shader->SetMatrix4("ProjectionMatrix", glm::value_ptr(ProjectionMatrix));
         Shader->SetMatrix4("ViewMatrix", glm::value_ptr(ViewMatrix));
         Shader->SetVec3("ViewPos", MainCamera->PosComponent->Location);
+        Shader->SetVec3("PointLight.Ambient", PointLightComponents[0]->GetAmbientAspect());
+        Shader->SetVec3("PointLight.Diffuse", PointLightComponents[0]->GetDiffuseAspect());
+        Shader->SetVec3("PointLight.Specular", PointLightComponents[0]->GetSpecularAspect());
+        Shader->SetFloat("PointLight.LinearCoef", PointLightComponents[0]->GetLinearCoef());
+        Shader->SetFloat("PointLight.QuadraticCoef", PointLightComponents[0]->GetQuadraticCoef());
+        Shader->SetVec3("PointLight.Location", PointLightComponents[0]->GetLocation());
     }
 }
 
@@ -93,7 +105,7 @@ void RenderSystem::LoadPositionDataToShader(Shader const* UsingShader, std::shar
 
 void RenderSystem::DrawMesh(std::shared_ptr<MeshComponent> const Mesh, Shader const* UsingShader) const
 {
-    if(!Mesh->MeshMaterial)
+    if (!Mesh->MeshMaterial)
     {
         return;
     }

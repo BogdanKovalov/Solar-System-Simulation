@@ -73,29 +73,29 @@ void Pawn::Rotate(glm::vec2 YawAndPitch)
 
 glm::vec3 Pawn::GetForwardVector() const
 {
-    if (!AttachedCamera)
+     if (!PawnCameraComponent)
     {
         return glm::vec3();
     }
-    return AttachedCamera->GetForwardVector();
+    return PawnCameraComponent->ForwardVector;
 }
 
 glm::vec3 Pawn::GetRightVector() const
 {
-    if (!AttachedCamera)
+    if (!PawnCameraComponent)
     {
         return glm::vec3();
     }
-    return AttachedCamera->GetRightVector();
+    return PawnCameraComponent->RightVector;
 }
 
 glm::vec3 Pawn::GetUpVector() const
 {
-    if (!AttachedCamera)
+    if (!PawnCameraComponent)
     {
         return glm::vec3();
     }
-    return AttachedCamera->GetUpVector();
+    return PawnCameraComponent->UpVector;
 }
 
 glm::mat4 Pawn::GetView() const

@@ -25,10 +25,6 @@ int main()
     Game* SolarSystemSimulation = new Game;
     auto MainWindow = SolarSystemSimulation->GetWindow();
 
-    PointLight Light(1000.0f, glm::vec3(1.0f), glm::vec3(1.0f), glm::vec3(1.0f));
-    SpotLight SpotLight(glm::vec3(0.0f, 0.0f, -1.0f), 12.5f, 17.5f);
-    SpotLight.SetLocation(glm::vec3(0.0f, 0.0f, 1.0f));
-
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_MULTISAMPLE);
 
@@ -51,13 +47,10 @@ int main()
     Comp = MyWorld->GetComponent<ModelComponent>(ID);
     Comp->Meshes = TempComp->Meshes;
 
-    //BackpackShader->SetVec3("PointLight.Ambient", Light.GetAmbientAspect());
-    //BackpackShader->SetVec3("PointLight.Diffuse", Light.GetDiffuseAspect());
-    //BackpackShader->SetVec3("PointLight.Specular", Light.GetSpecularAspect());
-    //BackpackShader->SetFloat("PointLight.LinearCoef", Light.GetLinearCoef());
-    //BackpackShader->SetFloat("PointLight.QuadraticCoef", Light.GetQuadraticCoef());*/
-    Light.SetLocation(glm::vec3(2.0f, 0.0f, 0.0f));
-    //BackpackShader->SetVec3("PointLight.Location", Light.GetLocation());
+    ID = MyWorld->CreateEntity();
+    MyWorld->AddComponent<PointLight>(ID);
+    PointLight* Light = MyWorld->GetComponent<PointLight>(ID);
+    Light->SetLocation(glm::vec3(2.0f, 0.0f, 0.0f));
 
     while (!glfwWindowShouldClose(MainWindow->GetGLWindow()))
     {
@@ -65,9 +58,6 @@ int main()
         LastTime = glfwGetTime();
 
         glfwPollEvents();
-
-        glClearColor(1.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
          SolarSystemSimulation->Tick((float)DeltaTime);
 

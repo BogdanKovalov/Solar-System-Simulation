@@ -40,7 +40,7 @@ struct CameraComponent : public Component
 {
     CameraComponent() 
     {
-        glm::vec3 TargetView(0.0f, 0.0f, -1.0f);
+        glm::vec3 TargetView(0.0f, 0.0f, 1.0f);
         auto API = Game::GetAPI();
         if (API)
         {

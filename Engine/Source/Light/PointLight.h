@@ -8,7 +8,7 @@
 class PointLight : public Light
 {
 public:
-    PointLight() = delete;
+    PointLight();
     PointLight(float InDistance);
     PointLight(float InDistance, glm::vec3 InAmbient, glm::vec3 InDiffuse, glm::vec3 InSpecular);
     PointLight(float InDistance, FLightAspects const& InLightAspects);

@@ -3,6 +3,7 @@
 #define _LIGHT_H_
 
 #include <glm/glm.hpp>
+#include "ECS/Entity.h"
 
 struct FLightAspects
 {
@@ -11,7 +12,7 @@ struct FLightAspects
     glm::vec3 Specular = glm::vec3(1.0f);
 };
 
-class Light
+class Light : public Component
 {
 public:
     Light(){};
