@@ -35,7 +35,7 @@ public:
     static std::shared_ptr<Game> GetAPI();
     std::shared_ptr<World> GetWorld() const { return MyWorld; }
     inline Window* GetWindow() const { return MainWindow.get(); }
-    virtual inline glm::vec3 GetWorldUp() const { return WorldUp; }
+    static glm::vec3 GetWorldUp();
     inline std::shared_ptr<InputManager> GetInputManger() { return MainInputManager; }
 
     // if we need to change WorldUp vector in other API
@@ -59,7 +59,7 @@ private:
     std::shared_ptr<SystemManager> SystemsManager;
     std::shared_ptr<ShaderManager> ShadersManager;
 
-    glm::vec3 WorldUp;
+    static glm::vec3 WorldUp;
 
     static std::shared_ptr<Game> API;
 };

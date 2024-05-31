@@ -14,10 +14,7 @@ Pawn::Pawn(FObjectInitializer const& Initializer) : Entity(Initializer)
     PosComponent = std::shared_ptr<PositionComponent>(dynamic_cast<PositionComponent*>(AddComponent<PositionComponent>()));
     PawnCameraComponent = std::shared_ptr<CameraComponent>(dynamic_cast<CameraComponent*>(AddComponent<CameraComponent>()));
     PawnCameraComponent->PosComponent->Location = glm::vec3(0.0f);
-
-
-    PosComponent->Location = glm::vec3(0.0f, 0.0f,0.0f);
-    AttachedCamera = std::shared_ptr<Camera>(new Camera(PosComponent->Location, glm::vec3(0.0f, 0.0f, -1.0f)));
+    PosComponent->Location = glm::vec3(0.0f, 0.0f, 0.0f);
 
     if (PawnTickComponent)
     {
@@ -25,22 +22,20 @@ Pawn::Pawn(FObjectInitializer const& Initializer) : Entity(Initializer)
     }
 }
 
-void Pawn::Tick(float DeltaTime) 
+void Pawn::Tick(float DeltaTime)
 {
     AddOffset(Velocity * DeltaTime);
-    /*AttachedCamera->AddOffset(Velocity * DeltaTime);*/
 }
 
-inline void Pawn::AddOffset(glm::vec3 Offset) 
+inline void Pawn::AddOffset(glm::vec3 Offset)
 {
-    Location += Offset;
+    PosComponent->Location += Offset;
     PawnCameraComponent->PosComponent->Location += Offset;
-    AttachedCamera->AddOffset(Offset);
 }
 
-void Pawn::Rotate(glm::vec2 YawAndPitch) 
+void Pawn::Rotate(glm::vec2 YawAndPitch)
 {
-    if (!AttachedCamera)
+    if (!PawnCameraComponent)
     {
         return;
     }
@@ -66,14 +61,14 @@ void Pawn::Rotate(glm::vec2 YawAndPitch)
     PawnCameraComponent->ForwardVector.y = sin(glm::radians(CameraPosition->Rotation.y));
     PawnCameraComponent->ForwardVector.x = sin(glm::radians(CameraPosition->Rotation.x)) * cos(glm::radians(CameraPosition->Rotation.y));
 
-     PawnCameraComponent->ForwardVector = glm::normalize(PawnCameraComponent->ForwardVector);
+    PawnCameraComponent->ForwardVector = glm::normalize(PawnCameraComponent->ForwardVector);
     PawnCameraComponent->RightVector = glm::normalize(glm::cross(PawnCameraComponent->ForwardVector, glm::vec3(0.0f, 1.0f, 0.0f)));
-     PawnCameraComponent->UpVector = glm::cross(PawnCameraComponent->RightVector, PawnCameraComponent->ForwardVector);
+    PawnCameraComponent->UpVector = glm::cross(PawnCameraComponent->RightVector, PawnCameraComponent->ForwardVector);
 }
 
 glm::vec3 Pawn::GetForwardVector() const
 {
-     if (!PawnCameraComponent)
+    if (!PawnCameraComponent)
     {
         return glm::vec3();
     }
@@ -96,22 +91,4 @@ glm::vec3 Pawn::GetUpVector() const
         return glm::vec3();
     }
     return PawnCameraComponent->UpVector;
-}
-
-glm::mat4 Pawn::GetView() const
-{
-    if (!AttachedCamera)
-    {
-        return glm::mat4();
-    }
-    return AttachedCamera->GetViewMatrix();
-}
-
-glm::vec3 Pawn::GetCameraLocation() const
-{
-    if (!AttachedCamera)
-    {
-        return glm::vec3();
-    }
-    return AttachedCamera->GetLocation();
 }

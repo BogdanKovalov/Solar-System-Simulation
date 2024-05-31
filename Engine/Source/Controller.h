@@ -15,11 +15,6 @@ class Controller
 {
 public:
     Controller();
-    void ProcessKeyboard(int Key, int Scancode, int Action, int Mods);
-    void ProcessMouseMotion(double XPos, double YPos);
-
-    glm::mat4 GetView() const;
-    glm::vec3 GetCameraLocation() const;
 
     inline void SetPawn(std::shared_ptr<Pawn> NewPawn) { ControlledPawn = NewPawn; }
 

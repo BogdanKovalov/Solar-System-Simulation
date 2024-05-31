@@ -18,39 +18,3 @@ Window::Window(int Width, int Height, const char* Title, GLFWmonitor* Monitor, G
     this->Width = Width;
     this->Height = Height;
 }
-
-void Window::ProcessKeyboard(int Key, int Scancode, int Action, int Mods) 
-{
-    if (!WindowController)
-    {
-        return;
-    }
-    WindowController->ProcessKeyboard(Key, Scancode, Action, Mods);
-}
-
-void Window::ProcessMouseMotion(int XPos, int YPos) 
-{
-    if (!WindowController)
-    {
-        return;
-    }
-    WindowController->ProcessMouseMotion(XPos, YPos);
-}
-
-glm::mat4 Window::GetView() const
-{
-    if (!WindowController)
-    {
-        return glm::mat4();
-    }
-    return WindowController->GetView();
-}
-
-glm::vec3 Window::GetCameraLocation() const
-{
-    if (!WindowController)
-    {
-        return glm::vec3();
-    }
-    return WindowController->GetCameraLocation();
-}

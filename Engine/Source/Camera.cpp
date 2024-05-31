@@ -6,14 +6,10 @@
 Camera::Camera(glm::vec3 Location, glm::vec3 TargetView) : Velocity(0.0f)
 {
     this->Location = Location;
-    auto API = Game::GetAPI();
-    if (API)
-    {
-        glm::vec3 WorldUp = Game::GetAPI()->GetWorldUp();
-        ForwardVector = glm::normalize(Location - TargetView);
-        RightVector = glm::normalize(glm::cross(ForwardVector, WorldUp));
-        UpVector = glm::cross(RightVector, ForwardVector);
-    }
+    glm::vec3 WorldUp = Game::GetWorldUp();
+    ForwardVector = glm::normalize(Location - TargetView);
+    RightVector = glm::normalize(glm::cross(ForwardVector, WorldUp));
+    UpVector = glm::cross(RightVector, ForwardVector);
 }
 
 void Camera::Rotate(glm::vec2 YawAndPitch)
@@ -37,10 +33,10 @@ void Camera::Rotate(glm::vec2 YawAndPitch)
     UpVector = glm::cross(RightVector, ForwardVector);
 }
 
-//void Camera::Tick(float DeltaTime)
+// void Camera::Tick(float DeltaTime)
 //{
-//    // AddOffset(Velocity * DeltaTime);
-//}
+//     // AddOffset(Velocity * DeltaTime);
+// }
 
 glm::mat4 Camera::GetViewMatrix() const
 {
@@ -54,7 +50,7 @@ glm::mat4 Camera::GetViewMatrix() const
     return ViewMatrix;
 }
 
-glm::vec3 Camera::GetLocation() const 
+glm::vec3 Camera::GetLocation() const
 {
     return Location;
 }

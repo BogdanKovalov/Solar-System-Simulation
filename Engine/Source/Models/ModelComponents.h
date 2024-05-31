@@ -18,7 +18,7 @@ struct PositionComponent : public Component
     glm::vec3 Scale = glm::vec3(1.0f);
 };
 
-struct MeshComponent: public Component
+struct MeshComponent : public Component
 {
 public:
     GLuint VAO;
@@ -38,17 +38,13 @@ struct ModelComponent : public Component
 
 struct CameraComponent : public Component
 {
-    CameraComponent() 
+    CameraComponent()
     {
         glm::vec3 TargetView(0.0f, 0.0f, 1.0f);
-        auto API = Game::GetAPI();
-        if (API)
-        {
-            glm::vec3 WorldUp = Game::GetAPI()->GetWorldUp();
-            ForwardVector = glm::normalize(PosComponent->Location - TargetView);
-            RightVector = glm::normalize(glm::cross(ForwardVector, WorldUp));
-            UpVector = glm::cross(RightVector, ForwardVector);
-        }
+        glm::vec3 WorldUp = Game::GetWorldUp();
+        ForwardVector = glm::normalize(PosComponent->Location - TargetView);
+        RightVector = glm::normalize(glm::cross(ForwardVector, WorldUp));
+        UpVector = glm::cross(RightVector, ForwardVector);
     }
 
     std::shared_ptr<PositionComponent> PosComponent = std::make_shared<PositionComponent>();

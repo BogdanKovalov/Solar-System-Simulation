@@ -9,18 +9,10 @@
 Controller::Controller()
 {
     InputComponent = std::make_shared<InputHandler>();
-    //ControlledPawn = std::shared_ptr<Pawn>(new Pawn(glm::vec3(0.0f, 0.0f, -3.0f)));
     MoveAction = std::make_shared<InputAction>();
     LookAction = std::make_shared<InputAction>();
     SetupInput();
 }
-
-void Controller::ProcessKeyboard(int Key, int Scancode, int Action, int Mods)
-{
-    //InputComponent->InputTriggered(static_cast<ETrigger>(Key), static_cast<ETriggerEvent>(Action));
-}
-
-void Controller::ProcessMouseMotion(double XPos, double YPos) {}
 
 void Controller::SetupInput()
 {
@@ -66,22 +58,4 @@ void Controller::Look(FInputValue const& InputValue)
     glm::vec2 DeltaMouse = InputValue.Get<glm::vec2>() - LastMousePos;
     LastMousePos = InputValue.Get<glm::vec2>();
     ControlledPawn->Rotate(DeltaMouse * MouseSensitivity);
-}
-
-glm::mat4 Controller::GetView() const
-{
-    if (!ControlledPawn)
-    {
-        return glm::mat4();
-    }
-    return ControlledPawn->GetView();
-}
-
-glm::vec3 Controller::GetCameraLocation() const
-{
-    if (!ControlledPawn)
-    {
-        return glm::vec3();
-    }
-    return ControlledPawn->GetCameraLocation();
 }

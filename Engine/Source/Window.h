@@ -24,8 +24,6 @@ public:
     inline int GetWidth() const { return Width; }
     inline int GetHeight() const { return Height; }
     inline GLFWwindow* GetGLWindow() { return GLWindow.get(); }
-    glm::mat4 GetView() const;
-    glm::vec3 GetCameraLocation() const;
 
 private:
     std::shared_ptr<GLFWwindow> GLWindow;

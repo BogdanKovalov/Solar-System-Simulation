@@ -27,20 +27,14 @@ public:
     glm::vec3 GetForwardVector() const;
     glm::vec3 GetRightVector() const;
     glm::vec3 GetUpVector() const;
-    glm::mat4 GetView() const;
-    glm::vec3 GetCameraLocation() const;
 
 private:
-    std::shared_ptr<Camera> AttachedCamera;
-
-    
     void Tick(float DeltaTime);
 
     std::shared_ptr<TickComponent> PawnTickComponent;
     std::shared_ptr<PositionComponent> PosComponent;
     std::shared_ptr<CameraComponent> PawnCameraComponent;
 
-    glm::vec3 Location = glm::vec3(0.0f);
     glm::vec3 Velocity = glm::vec3(0.0f);
 };
 

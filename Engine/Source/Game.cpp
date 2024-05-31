@@ -15,10 +15,11 @@
 #include <GLFW/glfw3.h>
 
 std::shared_ptr<Game> Game::API;
+glm::vec3 Game::WorldUp;
 
-std::shared_ptr<Game> Game::GetAPI()
+glm::vec3 Game::GetWorldUp()
 {
-    return API;
+    return WorldUp;
 }
 
 Game::Game()
